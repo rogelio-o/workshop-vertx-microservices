@@ -1,4 +1,4 @@
-package com.rogelioorts.workshop.vertx.microservices.edge;
+package com.rogelioorts.workshop.vertx.microservices.series.episodes;
 
 import com.rogelioorts.workshop.vertx.microservices.utils.BaseApplication;
 
@@ -6,7 +6,7 @@ import io.vertx.ext.web.Router;
 
 public class Application extends BaseApplication {
 	
-	public final static String SERVICE_NAME = "edge";
+	public final static String SERVICE_NAME = "series.episodes";
 
 	protected String getServiceName() {
 		return SERVICE_NAME;
@@ -19,4 +19,3 @@ public class Application extends BaseApplication {
 	}
 	
 }
-

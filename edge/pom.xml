@@ -8,6 +8,7 @@
   
   <properties>
   	<vertx-version>3.5.0</vertx-version>
+  	<scafolder-version>0.0.1-SNAPSHOT</scafolder-version>
   </properties>
   
   <developers>
@@ -21,19 +22,9 @@
   
   <dependencies>
   	<dependency>
-	  <groupId>io.vertx</groupId>
-	  <artifactId>vertx-core</artifactId>
-	  <version>${vertx-version}</version>
-	</dependency>
-	<dependency>
-	  <groupId>io.vertx</groupId>
-	  <artifactId>vertx-web</artifactId>
-	  <version>${vertx-version}</version>
-	</dependency>
-	<dependency>
-	  <groupId>io.vertx</groupId>
-	  <artifactId>vertx-service-discovery</artifactId>
-	  <version>${vertx-version}</version>
+	  <groupId>com.rogelioorts.workshop.vertx.microservices</groupId>
+	  <artifactId>scafolder</artifactId>
+	  <version>${scafolder-version}</version>
 	</dependency>
   </dependencies>
   
