@@ -11,6 +11,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
+import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.servicediscovery.Record;
@@ -20,7 +21,7 @@ import io.vertx.servicediscovery.ServiceReference;
 public final class DiscoveryService {
 
   private static final int MAX_FAILURES = 5;
-  private static final long TIMEOUT = 2000;
+  private static final long TIMEOUT = 10000;
   private static final long RESET_TIMEOUT = 10000;
 
   private static Object mutex = new Object();
@@ -82,6 +83,11 @@ public final class DiscoveryService {
   }
 
   public static void callService(final String service, final HttpMethod method, final String path, final Handler<AsyncResult<Buffer>> handler) {
+    callService(service, method, path, null, handler);
+  }
+
+  public static void callService(final String service, final HttpMethod method, final String path, final Buffer body,
+      final Handler<AsyncResult<Buffer>> handler) {
     final JsonObject recordQuery = new JsonObject().put("name", service);
     discovery.getRecord(recordQuery, recordResult -> {
       if (recordResult.failed()) {
@@ -93,18 +99,36 @@ public final class DiscoveryService {
         final HttpClient client = reference.getAs(HttpClient.class);
 
         breaker.<Buffer>execute(future -> {
-          client.request(method, path, httpClient -> {
+          HttpClientRequest request = client.request(method, path, httpClient -> {
             httpClient.exceptionHandler(error -> future.fail(error));
             httpClient.endHandler(v -> client.close());
             httpClient.bodyHandler(buffer -> future.complete(buffer));
           });
+
+          request.exceptionHandler(error -> future.fail(error));
+
+          if (body == null) {
+            request.end();
+          } else {
+            request.end(body);
+          }
         }).setHandler(handler);
       }
     });
   }
 
   public static void callJsonService(final String service, final HttpMethod method, final String path, final Handler<AsyncResult<JsonObject>> handler) {
-    callService(service, method, path, res -> {
+    callJsonService(service, method, path, handler);
+  }
+
+  public static void callJsonService(final String service, final HttpMethod method, final String path, final JsonObject body,
+      final Handler<AsyncResult<JsonObject>> handler) {
+    Buffer bodyAsBuffer = null;
+    if (body != null) {
+      bodyAsBuffer = body.toBuffer();
+    }
+
+    callService(service, method, path, bodyAsBuffer, res -> {
       if (res.failed()) {
         handler.handle(Future.failedFuture(res.cause()));
       } else {

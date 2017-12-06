@@ -1,7 +1,10 @@
 package com.rogelioorts.workshop.vertx.microservices.edge;
 
+import com.rogelioorts.workshop.vertx.microservices.edge.controllers.comments.CreateCommentsAction;
+import com.rogelioorts.workshop.vertx.microservices.edge.exceptions.ExceptionHandler;
 import com.rogelioorts.workshop.vertx.microservices.utils.BaseApplication;
 
+import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.Router;
 
 public class Application extends BaseApplication {
@@ -15,7 +18,12 @@ public class Application extends BaseApplication {
 
   @Override
   protected Router getRouter() {
-    return Router.router(vertx);
+    Router router = Router.router(vertx);
+    ExceptionHandler exceptionHandler = new ExceptionHandler();
+
+    router.route(HttpMethod.GET, CreateCommentsAction.PATH).handler(new CreateCommentsAction()).failureHandler(exceptionHandler);
+
+    return router;
   }
 
 }

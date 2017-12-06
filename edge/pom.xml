@@ -7,7 +7,7 @@
   <description>The out door of Rotten Potatoes application.</description>
   
   <properties>
-  	<vertx-version>3.5.0</vertx-version>
+  	<lombok-version>1.16.16</lombok-version>
   	<scafolder-version>0.0.1-SNAPSHOT</scafolder-version>
   </properties>
   
@@ -25,6 +25,12 @@
 	  <groupId>com.rogelioorts.workshop.vertx.microservices</groupId>
 	  <artifactId>scafolder</artifactId>
 	  <version>${scafolder-version}</version>
+	</dependency>
+	<dependency>
+      <groupId>org.projectlombok</groupId>
+	  <artifactId>lombok</artifactId>
+	  <version>${lombok-version}</version>
+	  <scope>provided</scope>
 	</dependency>
   </dependencies>
   
