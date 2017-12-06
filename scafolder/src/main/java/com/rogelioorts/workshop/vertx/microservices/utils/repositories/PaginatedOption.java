@@ -13,13 +13,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PaginatedOption {
 
-	private int page; // First is 1
-	
-	private Integer perPage;
-	
-	@JsonIgnore
-	public int getSkip() {
-		return (page - 1) * perPage;
-	}
-	
+  private int page; // First is 1
+
+  private Integer perPage;
+
+  @JsonIgnore
+  public int getSkip() {
+    return (page - 1) * perPage;
+  }
+
 }

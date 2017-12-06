@@ -13,14 +13,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PaginatedResult<T> {
 
-	private List<T> result;
-	
-	private int perPage;
-	
-	private long totalResults;
-	
-	public long getTotalPages() {
-		return (long) Math.ceil((double) totalResults / perPage);
-	}
-	
+  private List<T> result;
+
+  private int perPage;
+
+  private long totalResults;
+
+  public long getTotalPages() {
+    return (long) Math.ceil((double) totalResults / perPage);
+  }
+
 }

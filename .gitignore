@@ -5,3 +5,8 @@
 **/.project
 **/.settings/
 **/target/
+**/.vertx/
+**/reports/
+**/.checkstyle
+**/.pmdruleset.xml
+**/.pmd

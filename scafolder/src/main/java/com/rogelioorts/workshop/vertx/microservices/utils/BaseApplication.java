@@ -13,48 +13,43 @@ import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.types.HttpEndpoint;
 
 public abstract class BaseApplication extends AbstractVerticle {
-	
-	protected abstract String getServiceName();
-	
-	protected abstract Router getRouter();
 
-	@Override
-	public void start(Future<Void> start) {
-		ConfigurationService.start(vertx, confRes -> {
-			if(confRes.failed()) {
-				start.fail(confRes.cause());
-			} else {
-				JsonObject conf = confRes.result();
-				int port = conf.getInteger("port", 0);
-				String host = conf.getString("host", "localhost"); // TODO auto calculate hostname
-				
-				HttpServer server = vertx.createHttpServer();
-				server.requestHandler(getRouter()::accept).listen(port, host, serverRes -> {
-					if(serverRes.failed()) {
-						start.fail(serverRes.cause());
-					} else {
-						registerService(host, server.actualPort(), start);
-					}
-				});
-			}
-		});
-	}
-	
-	@Override
-	public void stop() {
-		DiscoveryService.unregisterService();
-		ConfigurationService.stop();
-	}
-	
-	private void registerService(String host, int port, Future<Void> start) {
-		Record record = HttpEndpoint.createRecord(
-			getServiceName(),
-			host,
-			port,
-			"/api"
-		);
-		
-		DiscoveryService.registerService(vertx, record, HandlersUtils.fromVoidHandler(start.completer()));
-	}
-	
+  protected abstract String getServiceName();
+
+  protected abstract Router getRouter();
+
+  @Override
+  public void start(final Future<Void> start) {
+    ConfigurationService.start(vertx, confRes -> {
+      if (confRes.failed()) {
+        start.fail(confRes.cause());
+      } else {
+        final JsonObject conf = confRes.result();
+        final int port = conf.getInteger("port", 0);
+        final String host = conf.getString("host", "localhost"); // TODO auto calculate hostname
+
+        final HttpServer server = vertx.createHttpServer();
+        server.requestHandler(getRouter()::accept).listen(port, host, serverRes -> {
+          if (serverRes.failed()) {
+            start.fail(serverRes.cause());
+          } else {
+            registerService(host, server.actualPort(), start);
+          }
+        });
+      }
+    });
+  }
+
+  @Override
+  public void stop() {
+    DiscoveryService.unregisterService();
+    ConfigurationService.stop();
+  }
+
+  private void registerService(final String host, final int port, final Future<Void> start) {
+    final Record record = HttpEndpoint.createRecord(getServiceName(), host, port, "/api");
+
+    DiscoveryService.registerService(vertx, record, HandlersUtils.fromVoidHandler(start.completer()));
+  }
+
 }
