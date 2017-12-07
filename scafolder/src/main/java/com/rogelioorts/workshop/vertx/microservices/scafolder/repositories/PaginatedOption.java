@@ -1,4 +1,4 @@
-package com.rogelioorts.workshop.vertx.microservices.utils.repositories;
+package com.rogelioorts.workshop.vertx.microservices.scafolder.repositories;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

@@ -1,4 +1,4 @@
-package com.rogelioorts.workshop.vertx.microservices.utils.services;
+package com.rogelioorts.workshop.vertx.microservices.scafolder.services;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;

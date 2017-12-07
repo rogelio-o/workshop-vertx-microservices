@@ -1,4 +1,4 @@
-package com.rogelioorts.workshop.vertx.microservices.utils.services;
+package com.rogelioorts.workshop.vertx.microservices.scafolder.services;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -150,10 +150,7 @@ public final class DiscoveryService {
 
   public static void callJsonService(final String service, final HttpMethod method, final String path, final JsonObject body,
       final Handler<AsyncResult<JsonObject>> handler) {
-    Buffer bodyAsBuffer = null;
-    if (body != null) {
-      bodyAsBuffer = body.toBuffer();
-    }
+    final Buffer bodyAsBuffer = body == null ? null : body.toBuffer();
 
     callService(service, method, path, bodyAsBuffer, res -> {
       if (res.failed()) {

@@ -1,9 +1,11 @@
-package com.rogelioorts.workshop.vertx.microservices.utils;
+package com.rogelioorts.workshop.vertx.microservices.scafolder;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.rogelioorts.workshop.vertx.microservices.utils.services.ConfigurationService;
-import com.rogelioorts.workshop.vertx.microservices.utils.services.DiscoveryService;
+import com.rogelioorts.workshop.vertx.microservices.scafolder.services.ConfigurationService;
+import com.rogelioorts.workshop.vertx.microservices.scafolder.services.DiscoveryService;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
@@ -77,6 +79,8 @@ public abstract class BaseApplication extends AbstractVerticle {
 
   private void configureJsonParser() {
     Json.mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    Json.mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    Json.mapper.setSerializationInclusion(Include.NON_NULL);
     Json.mapper.registerModule(new JavaTimeModule());
   }
 

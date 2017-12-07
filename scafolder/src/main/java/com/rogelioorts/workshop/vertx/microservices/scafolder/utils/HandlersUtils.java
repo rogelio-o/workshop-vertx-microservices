@@ -1,4 +1,4 @@
-package com.rogelioorts.workshop.vertx.microservices.utils.utils;
+package com.rogelioorts.workshop.vertx.microservices.scafolder.utils;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;

@@ -1,10 +1,10 @@
-package com.rogelioorts.workshop.vertx.microservices.utils.repositories;
+package com.rogelioorts.workshop.vertx.microservices.scafolder.repositories;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import com.rogelioorts.workshop.vertx.microservices.utils.services.ConfigurationService;
+import com.rogelioorts.workshop.vertx.microservices.scafolder.services.ConfigurationService;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
