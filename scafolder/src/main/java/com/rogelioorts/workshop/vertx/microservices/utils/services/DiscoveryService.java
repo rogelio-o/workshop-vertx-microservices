@@ -61,8 +61,15 @@ public final class DiscoveryService {
     discovery.publish(record, handler);
   }
 
-  public static void unregisterService() {
-    discovery.close();
+  public static void unregisterService(final Record record, final Handler<AsyncResult<Void>> handler) {
+    discovery.unpublish(record.getRegistration(), res -> {
+      if (res.failed()) {
+        handler.handle(Future.failedFuture(res.cause()));
+      } else {
+        discovery.close();
+        handler.handle(Future.succeededFuture());
+      }
+    });
   }
 
   public static void getService(final String service, final Handler<AsyncResult<ServiceReference>> handler) {

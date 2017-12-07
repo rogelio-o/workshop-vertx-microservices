@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.rogelioorts.workshop.vertx.microservices.utils.services.ConfigurationService;
 import com.rogelioorts.workshop.vertx.microservices.utils.services.DiscoveryService;
-import com.rogelioorts.workshop.vertx.microservices.utils.utils.HandlersUtils;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
@@ -20,6 +19,8 @@ import io.vertx.servicediscovery.types.HttpEndpoint;
 public abstract class BaseApplication extends AbstractVerticle {
 
   private final Logger log = LoggerFactory.getLogger(BaseApplication.class);
+
+  private Record publishedRecord;
 
   protected abstract String getServiceName();
 
@@ -52,15 +53,26 @@ public abstract class BaseApplication extends AbstractVerticle {
   }
 
   @Override
-  public void stop() {
-    DiscoveryService.unregisterService();
+  public void stop(final Future<Void> end) {
     ConfigurationService.stop();
+    unregisterService(end);
   }
 
   private void registerService(final String host, final int port, final Future<Void> start) {
     final Record record = HttpEndpoint.createRecord(getServiceName(), host, port, "/api");
 
-    DiscoveryService.registerService(vertx, record, HandlersUtils.fromVoidHandler(start.completer()));
+    DiscoveryService.registerService(vertx, record, res -> {
+      if (res.failed()) {
+        start.fail(res.cause());
+      } else {
+        publishedRecord = res.result();
+        start.complete();
+      }
+    });
+  }
+
+  private void unregisterService(final Future<Void> end) {
+    DiscoveryService.unregisterService(publishedRecord, end.completer());
   }
 
   private void configureJsonParser() {
