@@ -2,6 +2,9 @@ package com.rogelioorts.workshop.vertx.microservices.utils.services;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.vertx.circuitbreaker.CircuitBreaker;
 import io.vertx.circuitbreaker.CircuitBreakerOptions;
@@ -29,6 +32,8 @@ public final class DiscoveryService {
   private static ServiceDiscovery discovery;
 
   private static CircuitBreaker breaker;
+
+  private static final ConcurrentMap<String, AtomicInteger> SERVICES_BALANCER = new ConcurrentHashMap<>();
 
   private DiscoveryService() {
   }
@@ -96,32 +101,47 @@ public final class DiscoveryService {
   public static void callService(final String service, final HttpMethod method, final String path, final Buffer body,
       final Handler<AsyncResult<Buffer>> handler) {
     final JsonObject recordQuery = new JsonObject().put("name", service);
-    discovery.getRecord(recordQuery, recordResult -> {
+    discovery.getRecords(recordQuery, recordResult -> {
       if (recordResult.failed()) {
         handler.handle(Future.failedFuture(recordResult.cause()));
-      } else if (recordResult.result() == null) {
-        handler.handle(Future.failedFuture(new NoSuchElementException("No service found with name " + service)));
       } else {
-        final ServiceReference reference = discovery.getReference(recordResult.result());
-        final HttpClient client = reference.getAs(HttpClient.class);
+        try {
+          final ServiceReference reference = getBalancedReference(service, recordResult.result());
 
-        breaker.<Buffer>execute(future -> {
-          HttpClientRequest request = client.request(method, path, httpClient -> {
-            httpClient.exceptionHandler(error -> future.fail(error));
-            httpClient.endHandler(v -> client.close());
-            httpClient.bodyHandler(buffer -> future.complete(buffer));
-          });
+          final HttpClient client = reference.getAs(HttpClient.class);
 
-          request.exceptionHandler(error -> future.fail(error));
+          breaker.<Buffer>execute(future -> {
+            final HttpClientRequest request = client.request(method, path, httpClient -> {
+              httpClient.exceptionHandler(error -> future.fail(error));
+              httpClient.endHandler(v -> client.close());
+              httpClient.bodyHandler(buffer -> future.complete(buffer));
+            });
 
-          if (body == null) {
-            request.end();
-          } else {
-            request.end(body);
-          }
-        }).setHandler(handler);
+            request.exceptionHandler(error -> future.fail(error));
+
+            if (body == null) {
+              request.end();
+            } else {
+              request.end(body);
+            }
+          }).setHandler(handler);
+        } catch (NoSuchElementException e) {
+          handler.handle(Future.failedFuture(e));
+        }
       }
     });
+  }
+
+  private static ServiceReference getBalancedReference(final String service, final List<Record> records) throws NoSuchElementException {
+    if (records == null || records.isEmpty()) {
+      throw new NoSuchElementException("No service found with name " + service);
+    } else {
+      SERVICES_BALANCER.putIfAbsent(service, new AtomicInteger(0));
+      final AtomicInteger atomicIndex = SERVICES_BALANCER.get(service);
+      final int index = atomicIndex.getAndUpdate(v -> v >= (records.size() - 1) ? 0 : v + 1);
+
+      return discovery.getReference(records.get(index));
+    }
   }
 
   public static void callJsonService(final String service, final HttpMethod method, final String path, final Handler<AsyncResult<JsonObject>> handler) {

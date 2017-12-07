@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import com.rogelioorts.workshop.vertx.microservices.utils.services.ConfigurationService;
+
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.FindOptions;
 import io.vertx.ext.mongo.MongoClient;
@@ -26,11 +29,12 @@ public abstract class BaseRepository<T extends Model> {
 
   protected abstract int getDefaultResultsPerPage();
 
-  protected void beforeInsert(final T model, final Handler<AsyncResult<Void>> future) {
+  protected void beforeInsert(final T model, final Handler<AsyncResult<Void>> handler) {
+    handler.handle(Future.succeededFuture());
   }
 
-  protected void afterInsert(final T model, final Handler<AsyncResult<Void>> future) {
-
+  protected void afterInsert(final T model, final Handler<AsyncResult<Void>> handler) {
+    handler.handle(Future.succeededFuture());
   }
 
   public void insert(final T model, final Handler<AsyncResult<Void>> handler) {
@@ -57,10 +61,12 @@ public abstract class BaseRepository<T extends Model> {
     });
   }
 
-  protected void beforeUpdate(final T model, final Handler<AsyncResult<Void>> future) {
+  protected void beforeUpdate(final T model, final Handler<AsyncResult<Void>> handler) {
+    handler.handle(Future.succeededFuture());
   }
 
-  protected void afterUpdate(final T model, final Handler<AsyncResult<Void>> future) {
+  protected void afterUpdate(final T model, final Handler<AsyncResult<Void>> handler) {
+    handler.handle(Future.succeededFuture());
   }
 
   public void update(final T model, final Handler<AsyncResult<Void>> handler) {
@@ -86,10 +92,12 @@ public abstract class BaseRepository<T extends Model> {
     });
   }
 
-  protected void beforeDelete(final T model, final Handler<AsyncResult<Void>> future) {
+  protected void beforeDelete(final T model, final Handler<AsyncResult<Void>> handler) {
+    handler.handle(Future.succeededFuture());
   }
 
-  protected void afterDelete(final T model, final Handler<AsyncResult<Void>> future) {
+  protected void afterDelete(final T model, final Handler<AsyncResult<Void>> handler) {
+    handler.handle(Future.succeededFuture());
   }
 
   public void delete(final T model, final Handler<AsyncResult<Void>> handler) {
@@ -115,13 +123,15 @@ public abstract class BaseRepository<T extends Model> {
     });
   }
 
+  protected abstract JsonObject getPaginationSort();
+
   public void findPaginated(final PaginatedOption paginatedOption, final String idSerie, final Handler<AsyncResult<PaginatedResult<T>>> handler) {
     if (paginatedOption.getPerPage() == null) {
       paginatedOption.setPerPage(getDefaultResultsPerPage());
     }
 
     final JsonObject query = new JsonObject().put("id_serie", idSerie);
-    final JsonObject sort = new JsonObject().put("creation_date", -1);
+    final JsonObject sort = getPaginationSort();
     final FindOptions options = new FindOptions().setSkip(paginatedOption.getSkip()).setSort(sort);
 
     client.findWithOptions(getCollectionName(), query, options, res -> {
@@ -157,6 +167,14 @@ public abstract class BaseRepository<T extends Model> {
         }
       }
     });
+  }
+
+  public static MongoClient createClient(final Vertx vertx) {
+    final JsonObject mongoConfig = ConfigurationService.getConf().getJsonObject("mongo", new JsonObject());
+    final JsonObject config = new JsonObject().put("db_name", mongoConfig.getString("db")).put("connection_string",
+        mongoConfig.getString("connection_string", "mongodb://localhost:27017"));
+
+    return MongoClient.createShared(vertx, config);
   }
 
 }

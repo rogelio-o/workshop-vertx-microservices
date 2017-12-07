@@ -9,21 +9,21 @@ import io.vertx.ext.web.Router;
 
 public class Application extends BaseApplication {
 
-  public static final String SERVICE_NAME = "edge";
+    public static final String SERVICE_NAME = "edge";
 
-  @Override
-  protected String getServiceName() {
-    return SERVICE_NAME;
-  }
+    @Override
+    protected String getServiceName() {
+        return SERVICE_NAME;
+    }
 
-  @Override
-  protected Router getRouter() {
-    Router router = Router.router(vertx);
-    ExceptionHandler exceptionHandler = new ExceptionHandler();
+    @Override
+    protected Router getRouter() {
+        final Router router = Router.router(vertx);
+        final ExceptionHandler exceptionHandler = new ExceptionHandler();
 
-    router.route(HttpMethod.GET, CreateCommentsAction.PATH).handler(new CreateCommentsAction()).failureHandler(exceptionHandler);
+        router.route(HttpMethod.GET, CreateCommentsAction.PATH).handler(new CreateCommentsAction()).failureHandler(exceptionHandler);
 
-    return router;
-  }
+        return router;
+    }
 
 }

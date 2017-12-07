@@ -12,11 +12,11 @@ public class ExceptionHandler implements Handler<RoutingContext> {
 
   @Override
   public void handle(final RoutingContext context) {
-    Throwable exception = context.failure();
+    final Throwable exception = context.failure();
 
     log.error("Error in controller action.", exception);
 
-    JsonObject response = new JsonObject().put("error", true).put("message", exception.getMessage());
+    final JsonObject response = new JsonObject().put("error", true).put("message", exception.getMessage());
     context.response().end(response.encode());
   }
 

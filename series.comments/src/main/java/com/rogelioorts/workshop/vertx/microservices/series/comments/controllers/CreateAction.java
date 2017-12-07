@@ -18,10 +18,9 @@ public class CreateAction implements Handler<RoutingContext> {
   public void handle(final RoutingContext context) {
     log.debug("Create comment request received.");
 
-    Comment comment = new Comment();
+    final Comment comment = new Comment();
     comment.setText("prueba");
     comment.setCreationDate(LocalDateTime.now());
     context.response().end(JsonObject.mapFrom(comment).toBuffer());
   }
-
 }
