@@ -19,7 +19,7 @@ public class Application extends BaseApplication {
 
   @Override
   protected Router getRouter() {
-    Router router = Router.router(vertx);
+    final Router router = Router.router(vertx);
 
     router.route(HttpMethod.POST, COMMENTS_PATH).handler(new CreateAction());
 
