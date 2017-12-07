@@ -41,16 +41,6 @@ public class RatingsRepository extends BaseRepository<Rating> {
   }
 
   @Override
-  protected int getDefaultResultsPerPage() {
-    return DEFAULT_PER_PAGE;
-  }
-
-  @Override
-  protected JsonObject getPaginationSort() {
-    return null;
-  }
-
-  @Override
   protected void beforeInsert(final Rating model, final Handler<AsyncResult<Void>> handler) {
     model.setCreationDate(LocalDate.now());
 
@@ -59,8 +49,10 @@ public class RatingsRepository extends BaseRepository<Rating> {
 
   @Override
   protected void afterInsert(final Rating model, final Handler<AsyncResult<Void>> handler) {
-    model.setCreationDate(LocalDate.now());
+    sendNewRatingBusMessage(model, handler);
+  }
 
+  private void sendNewRatingBusMessage(final Rating model, final Handler<AsyncResult<Void>> handler) {
     getAverageAndTotal(model.getIdSerie(), res -> {
       if (res.failed()) {
         handler.handle(Future.failedFuture(res.cause()));

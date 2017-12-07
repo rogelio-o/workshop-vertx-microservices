@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.Model;
 
@@ -17,13 +20,16 @@ public class Serie implements Model {
   @JsonProperty("_id")
   private String id;
 
+  @NotEmpty
   private String name;
 
+  @NotEmpty
   private String channel;
 
   @JsonProperty("start_date")
   private LocalDate startDate;
 
+  @NotNull
   private SerieStatus status;
 
   private List<String> cast;

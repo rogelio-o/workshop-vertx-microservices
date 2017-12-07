@@ -1,5 +1,8 @@
 package com.rogelioorts.workshop.vertx.microservices.scafolder;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -8,7 +11,9 @@ import com.rogelioorts.workshop.vertx.microservices.scafolder.services.Configura
 import com.rogelioorts.workshop.vertx.microservices.scafolder.services.DiscoveryService;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
+import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
@@ -30,26 +35,32 @@ public abstract class BaseApplication extends AbstractVerticle {
 
   @Override
   public void start(final Future<Void> start) {
+    log.debug("Loading configuration...");
     ConfigurationService.start(vertx, confRes -> {
       if (confRes.failed()) {
         start.fail(confRes.cause());
       } else {
-        final JsonObject conf = confRes.result();
-        final int port = conf.getInteger("port", 0);
-        final String host = conf.getString("host", "localhost"); // TODO auto calculate hostname
+        try {
+          final JsonObject conf = confRes.result();
+          final String host = conf.getString("host");
+          final int port = conf.getInteger("port", 0);
 
-        configureJsonParser();
+          log.debug("Configuring JSON parser...");
+          configureJsonParser();
 
-        final HttpServer server = vertx.createHttpServer();
-        server.requestHandler(getRouter()::accept).listen(port, host, serverRes -> {
-          if (serverRes.failed()) {
-            start.fail(serverRes.cause());
-          } else {
-            log.info("HTTP server listening on port " + server.actualPort());
+          createHttpServer(port, host, serverRes -> {
+            if (serverRes.failed()) {
+              start.fail(serverRes.cause());
+            } else {
+              final HttpServer server = serverRes.result();
+              log.info("HTTP server listening on port " + server.actualPort());
 
-            registerService(host, server.actualPort(), start);
-          }
-        });
+              registerService(host, server.actualPort(), start);
+            }
+          });
+        } catch (Exception e) {
+          start.fail(e);
+        }
       }
     });
   }
@@ -60,17 +71,24 @@ public abstract class BaseApplication extends AbstractVerticle {
     unregisterService(end);
   }
 
-  private void registerService(final String host, final int port, final Future<Void> start) {
-    final Record record = HttpEndpoint.createRecord(getServiceName(), host, port, "/api");
+  private void registerService(final String host, final int port, final Future<Void> future) {
+    try {
+      final String finalHost = host == null ? getDefaultHost() : host;
+      log.debug("Registering service ({0}:{1})...", finalHost, String.valueOf(port));
 
-    DiscoveryService.registerService(vertx, record, res -> {
-      if (res.failed()) {
-        start.fail(res.cause());
-      } else {
-        publishedRecord = res.result();
-        start.complete();
-      }
-    });
+      final Record record = HttpEndpoint.createRecord(getServiceName(), finalHost, port, "/");
+
+      DiscoveryService.registerService(vertx, record, res -> {
+        if (res.failed()) {
+          future.fail(res.cause());
+        } else {
+          publishedRecord = res.result();
+          future.complete();
+        }
+      });
+    } catch (UnknownHostException e) {
+      registerService("localhost", port, future);
+    }
   }
 
   private void unregisterService(final Future<Void> end) {
@@ -82,6 +100,18 @@ public abstract class BaseApplication extends AbstractVerticle {
     Json.mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     Json.mapper.setSerializationInclusion(Include.NON_NULL);
     Json.mapper.registerModule(new JavaTimeModule());
+  }
+
+  private void createHttpServer(final int port, final String host, final Handler<AsyncResult<HttpServer>> handler) {
+    log.debug("Trying to start server in " + host + ":" + port);
+
+    final HttpServer server = vertx.createHttpServer();
+    server.requestHandler(getRouter()::accept).listen(port, handler);
+  }
+
+  private String getDefaultHost() throws UnknownHostException {
+    final InetAddress localHost = InetAddress.getLocalHost();
+    return localHost.getHostAddress();
   }
 
 }

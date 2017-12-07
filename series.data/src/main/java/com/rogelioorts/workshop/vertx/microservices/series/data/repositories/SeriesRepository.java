@@ -8,7 +8,6 @@ import com.rogelioorts.workshop.vertx.microservices.series.data.models.Serie;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 
 public class SeriesRepository extends BaseRepository<Serie> {
@@ -24,16 +23,6 @@ public class SeriesRepository extends BaseRepository<Serie> {
   @Override
   protected String getCollectionName() {
     return COLLECTION;
-  }
-
-  @Override
-  protected int getDefaultResultsPerPage() {
-    return DEFAULT_PER_PAGE;
-  }
-
-  @Override
-  protected JsonObject getPaginationSort() {
-    return new JsonObject().put("name", 1);
   }
 
   @Override

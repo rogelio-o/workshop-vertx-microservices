@@ -2,6 +2,8 @@ package com.rogelioorts.workshop.vertx.microservices.series.comments.models;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.Model;
 
@@ -16,10 +18,13 @@ public class Comment implements Model {
   private String id;
 
   @JsonProperty("id_serie")
+  @NotEmpty
   private String idSerie;
 
+  @NotEmpty
   private String text;
 
+  @NotEmpty
   private String owner;
 
   @JsonProperty("creation_date")

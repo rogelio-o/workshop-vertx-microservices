@@ -2,18 +2,16 @@ package com.rogelioorts.workshop.vertx.microservices.scafolder.repositories;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class PaginatedResult<T> {
 
-  private List<T> result;
+  private List<T> results;
+
+  private int page;
 
   private int perPage;
 

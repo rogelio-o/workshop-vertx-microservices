@@ -6,6 +6,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.JsonExceptionHandler;
+
 import io.vertx.circuitbreaker.CircuitBreaker;
 import io.vertx.circuitbreaker.CircuitBreakerOptions;
 import io.vertx.core.AsyncResult;
@@ -16,12 +18,17 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpMethod;
+import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.ServiceDiscovery;
 import io.vertx.servicediscovery.ServiceReference;
 
 public final class DiscoveryService {
+
+  private static final Logger LOG = LoggerFactory.getLogger(JsonExceptionHandler.class);
 
   private static final int MAX_FAILURES = 5;
   private static final long TIMEOUT = 10000;
@@ -94,12 +101,12 @@ public final class DiscoveryService {
     });
   }
 
-  public static void callService(final String service, final HttpMethod method, final String path, final Handler<AsyncResult<Buffer>> handler) {
+  public static void callService(final String service, final HttpMethod method, final String path, final Handler<AsyncResult<BufferClientResponse>> handler) {
     callService(service, method, path, null, handler);
   }
 
   public static void callService(final String service, final HttpMethod method, final String path, final Buffer body,
-      final Handler<AsyncResult<Buffer>> handler) {
+      final Handler<AsyncResult<BufferClientResponse>> handler) {
     final JsonObject recordQuery = new JsonObject().put("name", service);
     discovery.getRecords(recordQuery, recordResult -> {
       if (recordResult.failed()) {
@@ -110,12 +117,14 @@ public final class DiscoveryService {
 
           final HttpClient client = reference.getAs(HttpClient.class);
 
-          breaker.<Buffer>execute(future -> {
-            final HttpClientRequest request = client.request(method, path, httpClient -> {
-              httpClient.exceptionHandler(error -> future.fail(error));
-              httpClient.endHandler(v -> client.close());
-              httpClient.bodyHandler(buffer -> future.complete(buffer));
+          breaker.<BufferClientResponse>execute(future -> {
+            final HttpClientRequest request = client.request(method, path, httpClientResponse -> {
+              httpClientResponse.exceptionHandler(error -> future.fail(error));
+              httpClientResponse.endHandler(v -> client.close());
+              httpClientResponse.bodyHandler(buffer -> future.complete(new BufferClientResponse(httpClientResponse, buffer)));
             });
+
+            LOG.debug("Calling to service {0}: {1} {2}", service, method, request.absoluteURI());
 
             request.exceptionHandler(error -> future.fail(error));
 
@@ -144,19 +153,26 @@ public final class DiscoveryService {
     }
   }
 
-  public static void callJsonService(final String service, final HttpMethod method, final String path, final Handler<AsyncResult<JsonObject>> handler) {
+  public static void callJsonService(final String service, final HttpMethod method, final String path, final Handler<AsyncResult<JsonClientResponse>> handler) {
     callJsonService(service, method, path, handler);
   }
 
   public static void callJsonService(final String service, final HttpMethod method, final String path, final JsonObject body,
-      final Handler<AsyncResult<JsonObject>> handler) {
+      final Handler<AsyncResult<JsonClientResponse>> handler) {
     final Buffer bodyAsBuffer = body == null ? null : body.toBuffer();
 
     callService(service, method, path, bodyAsBuffer, res -> {
       if (res.failed()) {
         handler.handle(Future.failedFuture(res.cause()));
       } else {
-        handler.handle(Future.succeededFuture(res.result().toJsonObject()));
+        final BufferClientResponse bufferResponse = res.result();
+        try {
+          final JsonClientResponse jsonResponse = new JsonClientResponse(bufferResponse.getClientResponse(), bufferResponse.getBody().toJsonObject());
+
+          handler.handle(Future.succeededFuture(jsonResponse));
+        } catch (DecodeException e) {
+          handler.handle(Future.succeededFuture(new JsonClientResponse(bufferResponse.getClientResponse(), null)));
+        }
       }
     });
   }

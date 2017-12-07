@@ -1,9 +1,13 @@
 package com.rogelioorts.workshop.vertx.microservices.series.episodes.repositories;
 
+import java.time.LocalDateTime;
+
 import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.BaseRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.episodes.models.Episode;
 
-import io.vertx.core.json.JsonObject;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
+import io.vertx.core.Handler;
 import io.vertx.ext.mongo.MongoClient;
 
 public class EpisodesRepository extends BaseRepository<Episode> {
@@ -22,13 +26,18 @@ public class EpisodesRepository extends BaseRepository<Episode> {
   }
 
   @Override
-  protected int getDefaultResultsPerPage() {
-    return DEFAULT_PER_PAGE;
+  protected void beforeInsert(final Episode model, final Handler<AsyncResult<Void>> handler) {
+    model.setCreationDate(LocalDateTime.now());
+    model.setUpdateDate(LocalDateTime.now());
+
+    handler.handle(Future.succeededFuture());
   }
 
   @Override
-  protected JsonObject getPaginationSort() {
-    return new JsonObject().put("season", 1).put("number", 1);
+  protected void beforeUpdate(final Episode model, final Handler<AsyncResult<Void>> handler) {
+    model.setUpdateDate(LocalDateTime.now());
+
+    handler.handle(Future.succeededFuture());
   }
 
 }

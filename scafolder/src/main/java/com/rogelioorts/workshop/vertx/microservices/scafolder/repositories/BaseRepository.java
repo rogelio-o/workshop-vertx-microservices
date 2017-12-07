@@ -27,8 +27,6 @@ public abstract class BaseRepository<T extends Model> {
 
   protected abstract String getCollectionName();
 
-  protected abstract int getDefaultResultsPerPage();
-
   protected void beforeInsert(final T model, final Handler<AsyncResult<Void>> handler) {
     handler.handle(Future.succeededFuture());
   }
@@ -69,23 +67,32 @@ public abstract class BaseRepository<T extends Model> {
     handler.handle(Future.succeededFuture());
   }
 
-  public void update(final T model, final Handler<AsyncResult<Void>> handler) {
+  public void update(final String id, final T model, final Handler<AsyncResult<T>> handler) {
+    model.setId(id);
+
     beforeUpdate(model, beforeRes -> {
       if (beforeRes.failed()) {
         handler.handle(Future.failedFuture(beforeRes.cause()));
       } else {
-        final JsonObject query = new JsonObject().put("_id", model.getId());
+        final JsonObject query = new JsonObject().put("_id", id);
         client.findOneAndReplace(getCollectionName(), query, JsonObject.mapFrom(model), res -> {
           if (res.failed()) {
             handler.handle(Future.failedFuture(res.cause()));
           } else {
-            afterUpdate(model, afterRes -> {
-              if (afterRes.failed()) {
-                handler.handle(Future.failedFuture(afterRes.cause()));
-              } else {
-                handler.handle(Future.succeededFuture());
-              }
-            });
+            final JsonObject jsonModel = res.result();
+            if (jsonModel == null) {
+              handler.handle(Future.failedFuture(new NoSuchElementException("Not found document with ID " + id)));
+            } else {
+              final T newModel = jsonModel.mapTo(modelClass);
+
+              afterUpdate(newModel, afterRes -> {
+                if (afterRes.failed()) {
+                  handler.handle(Future.failedFuture(afterRes.cause()));
+                } else {
+                  handler.handle(Future.succeededFuture(newModel));
+                }
+              });
+            }
           }
         });
       }
@@ -98,6 +105,22 @@ public abstract class BaseRepository<T extends Model> {
 
   protected void afterDelete(final T model, final Handler<AsyncResult<Void>> handler) {
     handler.handle(Future.succeededFuture());
+  }
+
+  public void delete(final String id, final Handler<AsyncResult<Void>> handler) {
+    find(id, res -> {
+      if (res.failed()) {
+        handler.handle(Future.failedFuture(res.cause()));
+      } else {
+        final T model = res.result();
+
+        if (model == null) {
+          handler.handle(Future.failedFuture(new NoSuchElementException("Not found document with ID " + id)));
+        } else {
+          delete(model, handler);
+        }
+      }
+    });
   }
 
   public void delete(final T model, final Handler<AsyncResult<Void>> handler) {
@@ -123,16 +146,9 @@ public abstract class BaseRepository<T extends Model> {
     });
   }
 
-  protected abstract JsonObject getPaginationSort();
-
-  public void findPaginated(final PaginatedOption paginatedOption, final String idSerie, final Handler<AsyncResult<PaginatedResult<T>>> handler) {
-    if (paginatedOption.getPerPage() == null) {
-      paginatedOption.setPerPage(getDefaultResultsPerPage());
-    }
-
-    final JsonObject query = new JsonObject().put("id_serie", idSerie);
-    final JsonObject sort = getPaginationSort();
-    final FindOptions options = new FindOptions().setSkip(paginatedOption.getSkip()).setSort(sort);
+  public void findPaginated(final PaginatedOptions paginatedOptions, final Handler<AsyncResult<PaginatedResult<T>>> handler) {
+    final FindOptions options = new FindOptions().setSkip(paginatedOptions.getSkip()).setSort(paginatedOptions.getSort());
+    final JsonObject query = paginatedOptions.getQuery();
 
     client.findWithOptions(getCollectionName(), query, options, res -> {
       if (res.failed()) {
@@ -145,7 +161,13 @@ public abstract class BaseRepository<T extends Model> {
             final long totalResults = countRes.result();
             final List<T> results = res.result().stream().map(obj -> obj.mapTo(modelClass)).collect(Collectors.toList());
 
-            handler.handle(Future.succeededFuture(new PaginatedResult<>(results, paginatedOption.getPerPage(), totalResults)));
+            final PaginatedResult<T> paginatedResult = new PaginatedResult<>();
+            paginatedResult.setResults(results);
+            paginatedResult.setPage(paginatedOptions.getPage());
+            paginatedResult.setPerPage(paginatedOptions.getPerPage());
+            paginatedResult.setTotalResults(totalResults);
+
+            handler.handle(Future.succeededFuture(paginatedResult));
           }
         });
       }

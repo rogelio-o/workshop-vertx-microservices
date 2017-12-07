@@ -8,8 +8,12 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 
 public final class ConfigurationService {
+
+  private static final Logger LOG = LoggerFactory.getLogger(ConfigurationService.class);
 
   private static final int SCAN_PERIOD_IN_MS = 2000;
 
@@ -24,14 +28,18 @@ public final class ConfigurationService {
     final ConfigStoreOptions file = new ConfigStoreOptions().setType("file").setFormat("json").setConfig(new JsonObject().put("path", "application.json"));
     final ConfigRetrieverOptions options = new ConfigRetrieverOptions().setScanPeriod(SCAN_PERIOD_IN_MS).addStore(file);
 
+    LOG.debug("Creating configuration retriever...");
     retriever = ConfigRetriever.create(vertx, options);
 
     retriever.listen(change -> {
+      LOG.debug("Configuration has changed.");
       conf = change.getNewConfiguration();
     });
 
+    LOG.debug("Retrieving initial configuration...");
     retriever.getConfig(jsonResult -> {
       if (jsonResult.succeeded()) {
+        LOG.debug("Initial configuration retrieved.");
         conf = jsonResult.result();
         handler.handle(Future.succeededFuture(conf));
       } else {

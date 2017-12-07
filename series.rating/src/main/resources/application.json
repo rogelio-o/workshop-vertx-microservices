@@ -1,4 +1,5 @@
 {
+	"port": 8100,
 	"mongo": {
 		"db": "rotten_potatoes"
 	}

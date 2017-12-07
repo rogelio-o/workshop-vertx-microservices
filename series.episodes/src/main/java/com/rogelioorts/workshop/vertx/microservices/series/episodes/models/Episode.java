@@ -3,6 +3,9 @@ package com.rogelioorts.workshop.vertx.microservices.series.episodes.models;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.Model;
 
@@ -17,15 +20,19 @@ public class Episode implements Model {
   private String id;
 
   @JsonProperty("id_serie")
+  @NotEmpty
   private String idSerie;
 
-  private int season;
+  @NotNull
+  private Integer season;
 
-  private int number;
+  @NotNull
+  private Integer number;
 
+  @NotEmpty
   private String name;
 
-  private long duration; // minutes
+  private Long duration; // minutes
 
   @JsonProperty("release_date")
   private LocalDate releaseDate;
