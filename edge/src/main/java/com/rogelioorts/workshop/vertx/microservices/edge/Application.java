@@ -2,7 +2,7 @@ package com.rogelioorts.workshop.vertx.microservices.edge;
 
 import com.rogelioorts.workshop.vertx.microservices.edge.controllers.comments.CreateCommentsAction;
 import com.rogelioorts.workshop.vertx.microservices.edge.exceptions.ExceptionHandler;
-import com.rogelioorts.workshop.vertx.microservices.utils.BaseApplication;
+import com.rogelioorts.workshop.vertx.microservices.scafolder.BaseApplication;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.Router;

@@ -1,7 +1,7 @@
 package com.rogelioorts.workshop.vertx.microservices.series.comments;
 
+import com.rogelioorts.workshop.vertx.microservices.scafolder.BaseApplication;
 import com.rogelioorts.workshop.vertx.microservices.series.comments.controllers.CreateAction;
-import com.rogelioorts.workshop.vertx.microservices.utils.BaseApplication;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.Router;

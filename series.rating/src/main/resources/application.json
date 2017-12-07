@@ -1,5 +1,5 @@
 {
 	"mongo": {
-		"db": "test"
+		"db": "rotten_potatoes"
 	}
 }

@@ -2,9 +2,9 @@ package com.rogelioorts.workshop.vertx.microservices.series.rating.repositories;
 
 import java.time.LocalDate;
 
+import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.BaseRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.rating.models.Rating;
 import com.rogelioorts.workshop.vertx.microservices.series.rating.models.RatingStatistics;
-import com.rogelioorts.workshop.vertx.microservices.utils.repositories.BaseRepository;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.CompositeFuture;

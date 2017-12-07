@@ -1,9 +1,9 @@
 package com.rogelioorts.workshop.vertx.microservices.series.rating;
 
+import com.rogelioorts.workshop.vertx.microservices.scafolder.BaseApplication;
+import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.BaseRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.rating.controllers.CreateController;
 import com.rogelioorts.workshop.vertx.microservices.series.rating.repositories.RatingsRepository;
-import com.rogelioorts.workshop.vertx.microservices.utils.BaseApplication;
-import com.rogelioorts.workshop.vertx.microservices.utils.repositories.BaseRepository;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.mongo.MongoClient;

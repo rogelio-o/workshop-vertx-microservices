@@ -1,7 +1,7 @@
 package com.rogelioorts.workshop.vertx.microservices.series.episodes.repositories;
 
+import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.BaseRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.episodes.models.Episode;
-import com.rogelioorts.workshop.vertx.microservices.utils.repositories.BaseRepository;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;

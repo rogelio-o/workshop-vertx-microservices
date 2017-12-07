@@ -1,6 +1,6 @@
 package com.rogelioorts.workshop.vertx.microservices.series.episodes;
 
-import com.rogelioorts.workshop.vertx.microservices.utils.BaseApplication;
+import com.rogelioorts.workshop.vertx.microservices.scafolder.BaseApplication;
 
 import io.vertx.ext.web.Router;
 

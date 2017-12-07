@@ -4,9 +4,9 @@ import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 
+import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.ModelsValidator;
 import com.rogelioorts.workshop.vertx.microservices.series.rating.models.Rating;
 import com.rogelioorts.workshop.vertx.microservices.series.rating.repositories.RatingsRepository;
-import com.rogelioorts.workshop.vertx.microservices.utils.repositories.ModelsValidator;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.Handler;

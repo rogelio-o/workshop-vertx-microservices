@@ -1,6 +1,6 @@
 package com.rogelioorts.workshop.vertx.microservices.edge.controllers.comments;
 
-import com.rogelioorts.workshop.vertx.microservices.utils.services.DiscoveryService;
+import com.rogelioorts.workshop.vertx.microservices.scafolder.services.DiscoveryService;
 
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpMethod;

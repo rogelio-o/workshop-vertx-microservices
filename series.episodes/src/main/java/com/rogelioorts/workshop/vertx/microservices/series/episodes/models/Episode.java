@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.rogelioorts.workshop.vertx.microservices.utils.repositories.Model;
+import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.Model;
 
 import lombok.Getter;
 import lombok.Setter;
