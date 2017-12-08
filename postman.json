@@ -1,0 +1,719 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Rotten Potatoes",
+		"_postman_id": "5f52c28e-9d55-8f8c-215d-fb6172f25dda",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Edge",
+			"description": "",
+			"item": [
+				{
+					"name": "Series",
+					"description": "",
+					"item": [
+						{
+							"name": "Create Serie",
+							"request": {
+								"url": "http://localhost:8080/api/v1/series",
+								"method": "POST",
+								"header": [
+									{
+										"description": "",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"Gomorra\", \"channel\": \"Sky\", \"status\": \"BROADCASTING\"}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "View Serie",
+							"request": {
+								"url": "http://localhost:8080/api/v1/series/5a2a6926301aad042260ec7e",
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"Gomorra\", \"channel\": \"Sky\", \"status\": \"BROADCASTING\"}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Update Serie",
+							"request": {
+								"url": "http://localhost:8080/api/v1/series/5a2a6926301aad042260ec7e",
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"Gomorra\", \"channel\": \"Sky\", \"status\": \"WAITING_FOR_NEW_SEASON\"}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Serie",
+							"request": {
+								"url": "http://localhost:8080/api/v1/series/5a29ca237e99bc12d2b9e957",
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "List Series",
+							"request": {
+								"url": {
+									"raw": "http://localhost:8080/api/v1/series?per_page=1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"series"
+									],
+									"query": [
+										{
+											"key": "per_page",
+											"value": "1",
+											"equals": true,
+											"description": ""
+										}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"Gomorra\", \"channel\": \"Sky\", \"status\": \"BROADCASTING\"}"
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Comments",
+					"description": "",
+					"item": [
+						{
+							"name": "Create Comment",
+							"request": {
+								"url": "http://localhost:8080/api/v1/series/5a2a6926301aad042260ec7e/comments",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"text\": \"Test comment\", \"owner\": \"Joseph\"}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "List Comments",
+							"request": {
+								"url": {
+									"raw": "http://localhost:8080/api/v1/series/5a2a6926301aad042260ec7e/comments?per_page=1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"series",
+										"5a2a6926301aad042260ec7e",
+										"comments"
+									],
+									"query": [
+										{
+											"key": "per_page",
+											"value": "1",
+											"equals": true,
+											"description": ""
+										}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"text\": \"Test comment\", \"owner\": \"Joseph\"}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Update Comment",
+							"request": {
+								"url": "http://localhost:8080/api/v1/series/5a2a6926301aad042260ec7e/comments/5a2a71f9301aad04d0698c19",
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"text\": \"Test comment 3\", \"owner\": \"Joseph\"}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Comment",
+							"request": {
+								"url": "http://localhost:8080/api/v1/series/5a2a6926301aad042260ec7e/comments/5a2a7849301aad0594f5e6f2",
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Ratings",
+					"description": "",
+					"item": [
+						{
+							"name": "Create Rating",
+							"request": {
+								"url": "http://localhost:8080/api/v1/series/5a2a6926301aad042260ec7e/rating",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"puntuation\": 5}"
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Episodes",
+					"description": "",
+					"item": [
+						{
+							"name": "Create Episode",
+							"request": {
+								"url": "http://localhost:8080/api/v1/series/5a2a6926301aad042260ec7e/episodes",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"season\": 1, \"number\": 2, \"name\": \"Episode 2\", \"release_date\": \"2017-12-29\"}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "View Episode",
+							"request": {
+								"url": "http://localhost:8080/api/v1/series/5a2a6926301aad042260ec7e/episodes/5a2a79fc301aad05cbc02ecc",
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"season\": 1, \"number\": 2, \"name\": \"Episode 2\", \"release_date\": \"2017-12-29\"}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Update Episode",
+							"request": {
+								"url": "http://localhost:8080/api/v1/series/5a2a6926301aad042260ec7e/episodes/5a2a79fc301aad05cbc02ecc",
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"season\": 1, \"number\": 2, \"name\": \"Name of episode\", \"release_date\": \"2017-12-20\"}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "List Episodes",
+							"request": {
+								"url": {
+									"raw": "http://localhost:8080/api/v1/series/5a2a6926301aad042260ec7e/episodes?per_page=1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"series",
+										"5a2a6926301aad042260ec7e",
+										"episodes"
+									],
+									"query": [
+										{
+											"key": "per_page",
+											"value": "1",
+											"equals": true,
+											"description": ""
+										}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"season\": 1, \"number\": 2, \"name\": \"Name of episode\", \"release_date\": \"2017-12-20\"}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Episode",
+							"request": {
+								"url": "http://localhost:8080/api/v1/series/5a2a6926301aad042260ec7e/episodes/5a2a79fc301aad05cbc02ecc",
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Series Data",
+			"description": "",
+			"item": [
+				{
+					"name": "Create Serie",
+					"request": {
+						"url": "http://localhost:8090/api/v1/series",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"Gomorra\", \"channel\": \"Sky\", \"status\": \"BROADCASTING\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "View Serie",
+					"request": {
+						"url": "http://localhost:8090/api/v1/series/5a2a6926301aad042260ec7e",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"Gomorra\", \"channel\": \"Sky\", \"status\": \"BROADCASTING\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update Serie",
+					"request": {
+						"url": "http://localhost:8090/api/v1/series/5a2a6926301aad042260ec7e",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"Gomorra\", \"channel\": \"Sky\", \"status\": \"WAITING_FOR_NEW_SEASON\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Serie",
+					"request": {
+						"url": "http://localhost:8090/api/v1/series/5a29ca237e99bc12d2b9e957",
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "List Series",
+					"request": {
+						"url": {
+							"raw": "http://localhost:8090/api/v1/series?per_page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"v1",
+								"series"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "1",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"Gomorra\", \"channel\": \"Sky\", \"status\": \"BROADCASTING\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Series Comments",
+			"description": "",
+			"item": [
+				{
+					"name": "List Comments",
+					"request": {
+						"url": {
+							"raw": "http://localhost:8085/api/v1/series/5a2a6926301aad042260ec7e/comments?per_page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"api",
+								"v1",
+								"series",
+								"5a2a6926301aad042260ec7e",
+								"comments"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "1",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"text\": \"Test comment\", \"owner\": \"Joseph\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update Comment",
+					"request": {
+						"url": "http://localhost:8085/api/v1/series/5a2a6926301aad042260ec7e/comments/5a2a71f9301aad04d0698c19",
+						"method": "PUT",
+						"header": [
+							{
+								"description": "",
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"text\": \"Test comment 2\", \"owner\": \"Joseph\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create Comment",
+					"request": {
+						"url": "http://localhost:8085/api/v1/series/5a2a6926301aad042260ec7e/comments",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"text\": \"Test comment\", \"owner\": \"Joseph\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"url": "http://localhost:8085/api/v1/series/5a2a6926301aad042260ec7e/comments/5a2a7849301aad0594f5e6f2",
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Series Rating",
+			"description": "",
+			"item": [
+				{
+					"name": "Create Rating",
+					"request": {
+						"url": "http://localhost:8100/api/v1/episodes/1/rating",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id_serie\": \"1\", \"puntuation\": 5}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Series Episodes",
+			"description": "",
+			"item": [
+				{
+					"name": "Create Episode",
+					"request": {
+						"url": "http://localhost:8095/api/v1/series/5a2a6926301aad042260ec7e/episodes",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"season\": 1, \"number\": 2, \"name\": \"Episode 2\", \"release_date\": \"2017-12-29\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "View Episode",
+					"request": {
+						"url": "http://localhost:8095/api/v1/series/5a2a6926301aad042260ec7e/episodes/5a2a7aed301aad05cbc02ecd",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"season\": 1, \"number\": 2, \"name\": \"Episode 2\", \"release_date\": \"2017-12-29\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update Episode",
+					"request": {
+						"url": "http://localhost:8095/api/v1/series/5a2a6926301aad042260ec7e/episodes/5a2a7aed301aad05cbc02ecd",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"season\": 1, \"number\": 2, \"name\": \"Name of episode\", \"release_date\": \"2017-12-20\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "List Episodes",
+					"request": {
+						"url": {
+							"raw": "http://localhost:8095/api/v1/series/5a2a6926301aad042260ec7e/episodes?per_page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"api",
+								"v1",
+								"series",
+								"5a2a6926301aad042260ec7e",
+								"episodes"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "1",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"season\": 1, \"number\": 2, \"name\": \"Name of episode\", \"release_date\": \"2017-12-20\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Episode",
+					"request": {
+						"url": "http://localhost:8095/api/v1/series/5a2a6926301aad042260ec7e/episodes/5a2a7aed301aad05cbc02ecd",
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
