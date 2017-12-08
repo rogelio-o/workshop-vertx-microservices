@@ -75,6 +75,12 @@
     <module name="StaticVariableName"/>
     <module name="TypeName"/>
 
+    <!-- Checks indentation                              -->
+    <!-- See http://checkstyle.sf.ne/config_misc.html    -->
+    <module name="Indentation">
+      <property name="basicOffset" value="2" />
+    </module>
+
     <!-- Checks for imports                              -->
     <!-- See http://checkstyle.sf.net/config_import.html -->
     <module name="AvoidStarImport">
