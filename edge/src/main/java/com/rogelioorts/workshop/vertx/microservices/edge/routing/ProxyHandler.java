@@ -8,6 +8,7 @@ import com.rogelioorts.workshop.vertx.microservices.scafolder.services.Discovery
 import com.rogelioorts.workshop.vertx.microservices.scafolder.services.JsonClientResponse;
 
 import io.vertx.core.Handler;
+import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.DecodeException;
@@ -65,6 +66,7 @@ public class ProxyHandler implements Handler<RoutingContext> {
         final JsonClientResponse jsonClientResponse = res.result();
         final HttpServerResponse response = context.response();
 
+        response.putHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         jsonClientResponse.getClientResponse().headers().forEach(header -> response.putHeader(header.getKey(), header.getValue()));
         response.setStatusCode(jsonClientResponse.getClientResponse().statusCode());
 

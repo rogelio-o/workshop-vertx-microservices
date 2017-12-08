@@ -6,7 +6,9 @@ import com.rogelioorts.workshop.vertx.microservices.scafolder.BaseApplication;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.JsonExceptionHandler;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.ResourceNotFoundHandler;
 
+import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpMethod;
+import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
@@ -78,6 +80,14 @@ public class Application extends BaseApplication {
 
   private void addRoute(final Router router, final String service, final HttpMethod method, final String path) {
     router.route(method, path).handler(new ProxyHandler(service, method, path));
+    router.route(HttpMethod.OPTIONS, path).handler(context -> {
+      final HttpServerResponse response = context.response();
+
+      response.putHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
+      response.putHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET,POST,PUT,DELETE,OPTIONS");
+      response.putHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+      response.end();
+    });
   }
 
 }
