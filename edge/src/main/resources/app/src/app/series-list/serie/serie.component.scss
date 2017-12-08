@@ -1,0 +1,29 @@
+.serie-wrapper {
+  padding: 20px 0;
+  border-bottom: 1px solid #efefef;
+
+  .statistics {
+    list-style: none;
+    text-align: right;
+    margin-top:5px;
+
+    li {
+      display: inline-block;
+      padding: 0 2px;
+
+      .value {
+        color:#666;
+      }
+
+      .subvalue {
+        font-size:11px;
+        color:#999;
+        margin-left:-3px;
+      }
+    }
+  }
+
+  .tools {
+    text-align: right;
+  }
+}

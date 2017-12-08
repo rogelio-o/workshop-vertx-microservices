@@ -23,6 +23,8 @@ public class Serie implements Model {
   @NotEmpty
   private String name;
 
+  private String description;
+
   @NotEmpty
   private String channel;
 

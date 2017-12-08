@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'variables';
+@import '../node_modules/font-awesome/scss/font-awesome';
+@import '../node_modules/ng2-toastr/ng2-toastr.css';
+
+@import
+  '~bootstrap/scss/functions',
+  '~bootstrap/scss/variables',
+  '~bootstrap/scss/mixins',
+  '~bootstrap/scss/print',
+  '~bootstrap/scss/reboot',
+  '~bootstrap/scss/type',
+  '~bootstrap/scss/close';
+
+
+/* FIXED TOP HEADER */
+body {
+  padding-top: 4.5rem;
+}
+
+/* MODALS ALWAYS VISIBLES */
+.modal {
+  display: block;
+}

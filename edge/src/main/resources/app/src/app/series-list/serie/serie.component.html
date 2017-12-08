@@ -1,0 +1,44 @@
+<article class="serie-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-2" *ngIf="model.image">
+        <img class="img-fluid" src="{{model.image}}" alt="{{model.name}}">
+      </div>
+      <div class="col">
+        <h5 class="mt-0">{{model.name}}</h5>
+        <p>{{model.description}}</p>
+      </div>
+      <div class="col-3">
+        <div class="tools">
+          <div class="btn-group">
+            <button type="button" class="btn btn-danger" (click)="delete()" [disabled]="loading">
+              <i class="fa fa-trash"></i>
+              Delete
+            </button>
+
+            <a class="btn btn-primary" [routerLink]="[{ outlets: { seriesForm: ['update', model._id] } }]">
+              <i class="fa fa-edit"></i>
+              Update
+            </a>
+          </div>
+        </div>
+
+        <ul class="statistics">
+          <li>
+            <i class="fa fa-comments"></i>
+            <span class="value">{{model.num_comments}}</span>
+          </li>
+          <li>
+            <i class="fa fa-star"></i>
+            <span class="value">
+              {{model.average_rating.toFixed(2)}}
+            </span>
+            <span class="subvalue">
+              ({{model.num_ratings}})
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,7 @@
+<nav *ngIf="totalPages > 1">
+  <ul class="pagination justify-content-center">
+    <li *ngFor="let page of getPages()"  [ngClass]="{'active': page == currentPage, 'page-item': true}">
+      <a class="page-link" routerLink="{{path}}" [queryParams]="{page: page}">{{page}}</a>
+    </li>
+  </ul>
+</nav>

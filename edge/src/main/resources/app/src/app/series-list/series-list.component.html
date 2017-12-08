@@ -1,0 +1,39 @@
+<header>
+  <div class="pull-right">
+    <a class="btn btn-success" [routerLink]="[{ outlets: { seriesForm: 'create' } }]">
+      <i class="fa fa-plus"></i>
+      Add Serie
+    </a>
+  </div>
+
+  <h1>Series</h1>
+</header>
+
+<div *ngIf="!loading; else loadingBlock">
+  <div class="series-list-wrapper" *ngIf="series !== null; else noSeriesBlock">
+    <ul class="series-list">
+      <li *ngFor="let serie of series.results">
+        <app-serie [model]="serie"></app-serie>
+      </li>
+    </ul>
+
+    <app-pagination currentPage="{{series.page}}" totalPages="{{series.total_pages}}" path="/series"></app-pagination>
+  </div>
+
+  <ng-template #noSeriesBlock>
+    <div class="alert alert-info">
+      There is no series.
+    </div>
+  </ng-template>
+</div>
+
+<ng-template #loadingBlock>
+  <div class="loading-block">
+    <div class="icon-wrapper">
+      <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+    </div>
+    <p class="loading-lbl">Loading...</p>
+  </div>
+</ng-template>
+
+<router-outlet name="seriesForm" (modalClose)="modalClose($event)"></router-outlet>
