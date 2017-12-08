@@ -18,8 +18,7 @@ public class ListSeriesHandler implements Handler<RoutingContext> {
 
   @Override
   public void handle(final RoutingContext context) {
-    final String idSerie = context.pathParam("id_serie");
-    final JsonObject query = new JsonObject().put("id_serie", idSerie);
+    final JsonObject query = new JsonObject();
     final JsonObject sort = new JsonObject().put("name", 1);
     final PaginatedOptions paginatedOptions = PaginatedOptions.create(context, SeriesRepository.DEFAULT_PER_PAGE, query, sort);
 

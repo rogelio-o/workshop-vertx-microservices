@@ -1,6 +1,7 @@
 package com.rogelioorts.workshop.vertx.microservices.scafolder.utils;
 
 import java.util.Set;
+import java.util.function.Consumer;
 
 import javax.validation.ConstraintViolation;
 
@@ -17,19 +18,28 @@ public final class Requests {
   }
 
   public static <T> void bodyAsObject(final RoutingContext context, final Class<T> bodyClass, final Handler<T> handler) {
-    bodyAsObject(context, bodyClass, false, handler);
+    bodyAsObject(context, bodyClass, false, null, handler);
   }
 
   public static <T> void bodyAsObjectAndValidate(final RoutingContext context, final Class<T> bodyClass, final Handler<T> handler) {
-    bodyAsObject(context, bodyClass, true, handler);
+    bodyAsObject(context, bodyClass, true, null, handler);
   }
 
-  private static <T> void bodyAsObject(final RoutingContext context, final Class<T> bodyClass, final boolean validate, final Handler<T> handler) {
+  public static <T> void bodyAsObjectAndValidate(final RoutingContext context, final Class<T> bodyClass, final Consumer<T> transformer,
+      final Handler<T> handler) {
+    bodyAsObject(context, bodyClass, true, transformer, handler);
+  }
+
+  private static <T> void bodyAsObject(final RoutingContext context, final Class<T> bodyClass, final boolean validate, final Consumer<T> transformer,
+      final Handler<T> handler) {
     final JsonObject body = context.getBodyAsJson();
     if (body == null) {
       context.fail(HttpResponseStatus.BAD_REQUEST.code());
     } else {
       final T model = body.mapTo(bodyClass);
+      if (transformer != null) {
+        transformer.accept(model);
+      }
 
       if (validate) {
         final Set<ConstraintViolation<T>> validationErrors = ModelsValidator.validate(model);

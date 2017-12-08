@@ -22,8 +22,9 @@ public class UpdateCommentHandler implements Handler<RoutingContext> {
   @Override
   public void handle(final RoutingContext context) {
     final String id = context.pathParam("id");
+    final String idSerie = context.pathParam("idSerie");
 
-    Requests.bodyAsObjectAndValidate(context, Comment.class, model -> {
+    Requests.bodyAsObjectAndValidate(context, Comment.class, model -> model.setIdSerie(idSerie), model -> {
       commentsRepositor.update(id, model, res -> {
         if (res.failed()) {
           if (res.cause().getClass().equals(NoSuchElementException.class)) {

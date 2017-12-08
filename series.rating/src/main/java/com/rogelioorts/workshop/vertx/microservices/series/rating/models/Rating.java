@@ -1,6 +1,6 @@
 package com.rogelioorts.workshop.vertx.microservices.series.rating.models;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -33,6 +33,6 @@ public class Rating implements Model {
   private Integer puntuation;
 
   @JsonProperty("creation_date")
-  private LocalDate creationDate;
+  private LocalDateTime creationDate;
 
 }

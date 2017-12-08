@@ -45,6 +45,9 @@ public abstract class BaseApplication extends AbstractVerticle {
           final String host = conf.getString("host");
           final int port = conf.getInteger("port", 0);
 
+          log.debug("Running onConfigLodaded...");
+          onConfigLoaded();
+
           log.debug("Configuring JSON parser...");
           configureJsonParser();
 
@@ -69,6 +72,11 @@ public abstract class BaseApplication extends AbstractVerticle {
   public void stop(final Future<Void> end) {
     ConfigurationService.stop();
     unregisterService(end);
+  }
+
+  protected void onConfigLoaded() {
+    // Override if you want to do something after config is loaded (e.g. create database client).
+    log.debug("No actions on onConfigLoaded...");
   }
 
   private void registerService(final String host, final int port, final Future<Void> future) {

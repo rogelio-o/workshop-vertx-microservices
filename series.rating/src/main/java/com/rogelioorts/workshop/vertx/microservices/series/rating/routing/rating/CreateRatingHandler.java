@@ -19,7 +19,9 @@ public class CreateRatingHandler implements Handler<RoutingContext> {
 
   @Override
   public void handle(final RoutingContext context) {
-    Requests.bodyAsObjectAndValidate(context, Rating.class, model -> {
+    final String idSerie = context.pathParam("idSerie");
+
+    Requests.bodyAsObjectAndValidate(context, Rating.class, model -> model.setIdSerie(idSerie), model -> {
       ratingsRepository.insert(model, res -> {
         if (res.failed()) {
           context.fail(res.cause());

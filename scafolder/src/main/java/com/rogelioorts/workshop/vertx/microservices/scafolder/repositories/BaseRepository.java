@@ -83,13 +83,11 @@ public abstract class BaseRepository<T extends Model> {
             if (jsonModel == null) {
               handler.handle(Future.failedFuture(new NoSuchElementException("Not found document with ID " + id)));
             } else {
-              final T newModel = jsonModel.mapTo(modelClass);
-
-              afterUpdate(newModel, afterRes -> {
+              afterUpdate(model, afterRes -> {
                 if (afterRes.failed()) {
                   handler.handle(Future.failedFuture(afterRes.cause()));
                 } else {
-                  handler.handle(Future.succeededFuture(newModel));
+                  handler.handle(Future.succeededFuture(model));
                 }
               });
             }
@@ -147,7 +145,8 @@ public abstract class BaseRepository<T extends Model> {
   }
 
   public void findPaginated(final PaginatedOptions paginatedOptions, final Handler<AsyncResult<PaginatedResult<T>>> handler) {
-    final FindOptions options = new FindOptions().setSkip(paginatedOptions.getSkip()).setSort(paginatedOptions.getSort());
+    final FindOptions options = new FindOptions().setSkip(paginatedOptions.getSkip()).setSort(paginatedOptions.getSort())
+        .setLimit(paginatedOptions.getPerPage());
     final JsonObject query = paginatedOptions.getQuery();
 
     client.findWithOptions(getCollectionName(), query, options, res -> {

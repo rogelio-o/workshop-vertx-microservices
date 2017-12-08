@@ -22,8 +22,9 @@ public class UpdateEpisodeHandler implements Handler<RoutingContext> {
   @Override
   public void handle(final RoutingContext context) {
     final String id = context.pathParam("id");
+    final String idSerie = context.pathParam("idSerie");
 
-    Requests.bodyAsObjectAndValidate(context, Episode.class, model -> {
+    Requests.bodyAsObjectAndValidate(context, Episode.class, model -> model.setIdSerie(idSerie), model -> {
       episodesRepository.update(id, model, res -> {
         if (res.failed()) {
           if (res.cause().getClass().equals(NoSuchElementException.class)) {

@@ -2,6 +2,7 @@ package com.rogelioorts.workshop.vertx.microservices.edge.routing;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.rogelioorts.workshop.vertx.microservices.scafolder.services.DiscoveryService;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.services.JsonClientResponse;
@@ -16,6 +17,10 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.RoutingContext;
 
 public class ProxyHandler implements Handler<RoutingContext> {
+
+  private static final String QUERY_START = "?";
+  private static final String QUERY_ASSIGN = "=";
+  private static final String QUERY_SEPARATOR = "&";
 
   private final Logger log = LoggerFactory.getLogger(ProxyHandler.class);
 
@@ -41,18 +46,19 @@ public class ProxyHandler implements Handler<RoutingContext> {
     log.debug("Incoming request for " + method + " " + path);
 
     final String pathWithFilledPlaceholders = replacePathPlaceholders(context);
+    final String pathWithQuery = addQueryToPath(context, pathWithFilledPlaceholders);
 
     try {
       final JsonObject body = context.getBodyAsJson();
 
-      call(context, pathWithFilledPlaceholders, body);
+      call(context, pathWithQuery, body);
     } catch (DecodeException e) {
-      call(context, pathWithFilledPlaceholders, null);
+      call(context, pathWithQuery, null);
     }
   }
 
-  private void call(final RoutingContext context, final String pathWithFilledPlaceholders, final JsonObject body) {
-    DiscoveryService.callJsonService(service, method, pathWithFilledPlaceholders, body, res -> {
+  private void call(final RoutingContext context, final String fullBuiltPath, final JsonObject body) {
+    DiscoveryService.callJsonService(service, method, fullBuiltPath, body, res -> {
       if (res.failed()) {
         context.fail(res.cause());
       } else {
@@ -83,6 +89,18 @@ public class ProxyHandler implements Handler<RoutingContext> {
       pathMatcher.appendReplacement(result, value);
     }
     pathMatcher.appendTail(result);
+
+    return result.toString();
+  }
+
+  private String addQueryToPath(final RoutingContext context, final String pathWithFilledPlaceholders) {
+    final StringBuilder result = new StringBuilder(pathWithFilledPlaceholders);
+
+    if (!context.queryParams().isEmpty()) {
+      final String queryString = context.queryParams().entries().stream().map(entry -> entry.getKey() + QUERY_ASSIGN + entry.getValue())
+          .collect(Collectors.joining(QUERY_SEPARATOR));
+      result.append(QUERY_START).append(queryString);
+    }
 
     return result.toString();
   }

@@ -1,6 +1,6 @@
 package com.rogelioorts.workshop.vertx.microservices.series.rating.repositories;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.BaseRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.rating.models.Rating;
@@ -22,7 +22,7 @@ public class RatingsRepository extends BaseRepository<Rating> {
 
   private static final String COLLECTION = "ratings";
 
-  private static final String NEW_RATING_BUS_MSG = "newRating";
+  private static final String NEW_RATING_BUS_MSG = "new.rating";
 
   private final Vertx vertx;
 
@@ -42,7 +42,7 @@ public class RatingsRepository extends BaseRepository<Rating> {
 
   @Override
   protected void beforeInsert(final Rating model, final Handler<AsyncResult<Void>> handler) {
-    model.setCreationDate(LocalDate.now());
+    model.setCreationDate(LocalDateTime.now());
 
     handler.handle(Future.succeededFuture());
   }
@@ -77,7 +77,7 @@ public class RatingsRepository extends BaseRepository<Rating> {
       if (res.failed()) {
         handler.handle(Future.failedFuture(res.cause()));
       } else {
-        handler.handle(Future.succeededFuture(new RatingStatistics(fAverage.result(), fTotal.result())));
+        handler.handle(Future.succeededFuture(new RatingStatistics(idSerie, fAverage.result(), fTotal.result())));
       }
     });
   }

@@ -15,7 +15,7 @@ public class Application extends BaseApplication {
 
   private static final String RATING_PATH = "/api/v1/series/:idSerie/rating";
 
-  public static final String SERVICE_NAME = "series.episodes";
+  public static final String SERVICE_NAME = "series.rating";
 
   @Override
   protected String getServiceName() {

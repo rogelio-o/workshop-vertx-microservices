@@ -21,9 +21,9 @@ public class CommentsRepository extends BaseRepository<Comment> {
 
   private static final String COLLECTION = "comments";
 
-  private static final String NEW_COMMENT_BUS_MSG = "newComment";
+  private static final String NEW_COMMENT_BUS_MSG = "new.comment";
 
-  private static final String REMOVE_COMMENT_BUS_MSG = "removeComment";
+  private static final String REMOVE_COMMENT_BUS_MSG = "remove.comment";
 
   private final Vertx vertx;
 
@@ -60,9 +60,11 @@ public class CommentsRepository extends BaseRepository<Comment> {
         handler.handle(Future.failedFuture(res.cause()));
       } else {
         final EventBus eventBus = vertx.eventBus();
+        final long total = res.result();
         final NewCommentMessage newMessage = new NewCommentMessage();
-        newMessage.setTotal(res.result());
+        newMessage.setIdSerie(model.getIdSerie());
         newMessage.setComment(model);
+        newMessage.setTotal(total);
         eventBus.publish(NEW_COMMENT_BUS_MSG, JsonObject.mapFrom(newMessage));
 
         handler.handle(Future.succeededFuture());
@@ -81,10 +83,11 @@ public class CommentsRepository extends BaseRepository<Comment> {
         handler.handle(Future.failedFuture(res.cause()));
       } else {
         final EventBus eventBus = vertx.eventBus();
-        final RemoveCommentMessage newMessage = new RemoveCommentMessage();
-        newMessage.setTotal(res.result());
-        newMessage.setId(model.getId());
-        eventBus.publish(REMOVE_COMMENT_BUS_MSG, JsonObject.mapFrom(newMessage));
+        final RemoveCommentMessage removeMessage = new RemoveCommentMessage();
+        removeMessage.setId(model.getId());
+        removeMessage.setIdSerie(model.getIdSerie());
+        removeMessage.setTotal(res.result());
+        eventBus.publish(REMOVE_COMMENT_BUS_MSG, JsonObject.mapFrom(removeMessage));
 
         handler.handle(Future.succeededFuture());
       }
