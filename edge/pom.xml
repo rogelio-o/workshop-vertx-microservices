@@ -7,8 +7,11 @@
   <description>The out door of Rotten Potatoes application.</description>
   
   <properties>
+  	<vertx-version>3.5.0</vertx-version>
   	<lombok-version>1.16.16</lombok-version>
   	<scafolder-version>0.0.1-SNAPSHOT</scafolder-version>
+  	<frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
+  	<node.version>v8.4.0</node.version>
   </properties>
   
   <developers>
@@ -25,6 +28,11 @@
 	  <groupId>com.rogelioorts.workshop.vertx.microservices</groupId>
 	  <artifactId>scafolder</artifactId>
 	  <version>${scafolder-version}</version>
+	</dependency>
+	<dependency>
+		<groupId>io.vertx</groupId>
+		<artifactId>vertx-web-templ-pebble</artifactId>
+		<version>${vertx-version}</version>
 	</dependency>
 	<dependency>
       <groupId>org.projectlombok</groupId>
@@ -85,6 +93,51 @@
           	</configuration>	
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>${frontend-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>install node</id>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+          </execution>
+          <execution>
+		    <id>npm install</id>
+		    <goals>
+		        <goal>npm</goal>
+		    </goals>
+		    <phase>generate-resources</phase>
+		  </execution>
+		  <execution>
+		    <id>ng build</id>
+		    <goals>
+		        <goal>npm</goal>
+		    </goals>
+		    <phase>generate-resources</phase>
+            <configuration>
+              <arguments>run build</arguments>
+            </configuration>
+		  </execution>
+          <execution>
+            <id>ng clean</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>clean</phase>
+            <configuration>
+              <arguments>run clean</arguments>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <nodeVersion>${node.version}</nodeVersion>
+   		  <workingDirectory>src/main/resources/app</workingDirectory>
+        </configuration>
       </plugin>
     </plugins>
   </build>

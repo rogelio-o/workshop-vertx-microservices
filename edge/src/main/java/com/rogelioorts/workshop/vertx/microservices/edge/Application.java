@@ -1,5 +1,6 @@
 package com.rogelioorts.workshop.vertx.microservices.edge;
 
+import com.rogelioorts.workshop.vertx.microservices.edge.routing.MainHandler;
 import com.rogelioorts.workshop.vertx.microservices.edge.routing.ProxyHandler;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.BaseApplication;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.JsonExceptionHandler;
@@ -8,6 +9,8 @@ import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.Resourc
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.StaticHandler;
+import io.vertx.ext.web.templ.PebbleTemplateEngine;
 
 public class Application extends BaseApplication {
 
@@ -34,6 +37,8 @@ public class Application extends BaseApplication {
 
   @Override
   protected Router getRouter() {
+    final PebbleTemplateEngine templateEngine = PebbleTemplateEngine.create(vertx);
+
     final Router router = Router.router(vertx);
     router.route().handler(BodyHandler.create());
 
@@ -60,7 +65,13 @@ public class Application extends BaseApplication {
     // SERIES RATING
     addRoute(router, RATING_SERVICE, HttpMethod.POST, RATING_PATH);
 
+    // DEFAULT API
     router.route("/api/*").handler(new ResourceNotFoundHandler()).failureHandler(new JsonExceptionHandler());
+
+    // FRONTEND
+    StaticHandler staticHandler = StaticHandler.create("app/dist/");
+    router.route("/assets/*").handler(staticHandler);
+    router.route(HttpMethod.GET, "/*").handler(new MainHandler(templateEngine));
 
     return router;
   }
