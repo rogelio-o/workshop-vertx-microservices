@@ -2,6 +2,7 @@ package com.rogelioorts.workshop.vertx.microservices.series.rating;
 
 import com.rogelioorts.workshop.vertx.microservices.scafolder.BaseApplication;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.JsonExceptionHandler;
+import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.ResourceNotFoundHandler;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.BaseRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.rating.repositories.RatingsRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.rating.routing.rating.CreateRatingHandler;
@@ -32,7 +33,7 @@ public class Application extends BaseApplication {
 
     router.route(HttpMethod.POST, RATING_PATH).handler(new CreateRatingHandler(ratingsRepository));
 
-    router.route().failureHandler(new JsonExceptionHandler());
+    router.route().handler(new ResourceNotFoundHandler()).failureHandler(new JsonExceptionHandler());
 
     return router;
   }

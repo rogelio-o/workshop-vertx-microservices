@@ -17,10 +17,14 @@ public class JsonExceptionHandler implements Handler<RoutingContext> {
   public void handle(final RoutingContext context) {
     final Throwable exception = context.failure();
     final JsonObject response = new JsonObject().put("error", true);
-    final int statusCode = exception == null ? getStatusCodeFromContext(context) : HttpResponseStatus.INTERNAL_SERVER_ERROR.code();
+    final int statusCode = exception == null ? getStatusCodeFromContext(context) : getStatusCodeFromException(exception);
 
     if (exception != null) {
-      log.error("Error in controller action.", exception);
+      if (isResourceNotFoundException(exception)) {
+        log.warn("Resource not found {0}.", context.normalisedPath());
+      } else {
+        log.error("Error in controller action.", exception);
+      }
       response.put("message", exception.getMessage());
     }
 
@@ -31,6 +35,14 @@ public class JsonExceptionHandler implements Handler<RoutingContext> {
     final int contextStatusCode = context.statusCode();
 
     return contextStatusCode == HttpResponseStatus.OK.code() ? HttpResponseStatus.NOT_FOUND.code() : contextStatusCode;
+  }
+
+  private int getStatusCodeFromException(final Throwable exception) {
+    return isResourceNotFoundException(exception) ? HttpResponseStatus.NOT_FOUND.code() : HttpResponseStatus.INTERNAL_SERVER_ERROR.code();
+  }
+
+  private boolean isResourceNotFoundException(final Throwable exception) {
+    return exception.getClass().equals(ResourceNotFoundException.class);
   }
 
 }

@@ -2,6 +2,7 @@ package com.rogelioorts.workshop.vertx.microservices.series.episodes;
 
 import com.rogelioorts.workshop.vertx.microservices.scafolder.BaseApplication;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.JsonExceptionHandler;
+import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.ResourceNotFoundHandler;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.BaseRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.episodes.repositories.EpisodesRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.episodes.routing.episodes.CreateEpisodeHandler;
@@ -40,7 +41,7 @@ public class Application extends BaseApplication {
     router.route(HttpMethod.PUT, EPISODES_PATH + "/:id").handler(new UpdateEpisodeHandler(episodesRepository));
     router.route(HttpMethod.DELETE, EPISODES_PATH + "/:id").handler(new DeleteEpisodeHandler(episodesRepository));
 
-    router.route().failureHandler(new JsonExceptionHandler());
+    router.route().handler(new ResourceNotFoundHandler()).failureHandler(new JsonExceptionHandler());
 
     return router;
   }

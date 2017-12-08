@@ -3,6 +3,7 @@ package com.rogelioorts.workshop.vertx.microservices.edge;
 import com.rogelioorts.workshop.vertx.microservices.edge.routing.ProxyHandler;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.BaseApplication;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.JsonExceptionHandler;
+import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.ResourceNotFoundHandler;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.Router;
@@ -59,7 +60,7 @@ public class Application extends BaseApplication {
     // SERIES RATING
     addRoute(router, RATING_SERVICE, HttpMethod.POST, RATING_PATH);
 
-    router.route().failureHandler(new JsonExceptionHandler());
+    router.route("/api/*").handler(new ResourceNotFoundHandler()).failureHandler(new JsonExceptionHandler());
 
     return router;
   }

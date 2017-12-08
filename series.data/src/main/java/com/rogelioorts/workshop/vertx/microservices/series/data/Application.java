@@ -2,6 +2,7 @@ package com.rogelioorts.workshop.vertx.microservices.series.data;
 
 import com.rogelioorts.workshop.vertx.microservices.scafolder.BaseApplication;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.JsonExceptionHandler;
+import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.ResourceNotFoundHandler;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.BaseRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.data.events.comments.CommentsHandler;
 import com.rogelioorts.workshop.vertx.microservices.series.data.events.rating.NewRatingHandler;
@@ -42,7 +43,7 @@ public class Application extends BaseApplication {
     router.route(HttpMethod.PUT, SERIES_PATH + "/:id").handler(new UpdateSerieHandler(seriesRepository));
     router.route(HttpMethod.DELETE, SERIES_PATH + "/:id").handler(new DeleteSerieHandler(seriesRepository));
 
-    router.route().failureHandler(new JsonExceptionHandler());
+    router.route().handler(new ResourceNotFoundHandler()).failureHandler(new JsonExceptionHandler());
 
     return router;
   }

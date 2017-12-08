@@ -1,6 +1,8 @@
 package com.rogelioorts.workshop.vertx.microservices.series.comments;
 
 import com.rogelioorts.workshop.vertx.microservices.scafolder.BaseApplication;
+import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.JsonExceptionHandler;
+import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.ResourceNotFoundHandler;
 import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.BaseRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.comments.repositories.CommentsRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.comments.routing.comments.CreateCommentHandler;
@@ -36,6 +38,8 @@ public class Application extends BaseApplication {
     router.route(HttpMethod.POST, COMMENTS_PATH).handler(new CreateCommentHandler(commentsRepository));
     router.route(HttpMethod.PUT, COMMENTS_PATH + "/:id").handler(new UpdateCommentHandler(commentsRepository));
     router.route(HttpMethod.DELETE, COMMENTS_PATH + "/:id").handler(new DeleteCommentHandler(commentsRepository));
+
+    router.route().handler(new ResourceNotFoundHandler()).failureHandler(new JsonExceptionHandler());
 
     return router;
   }
