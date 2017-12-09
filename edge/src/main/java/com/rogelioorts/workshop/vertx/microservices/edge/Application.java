@@ -9,9 +9,12 @@ import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.Resourc
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.ext.bridge.PermittedOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
+import io.vertx.ext.web.handler.sockjs.BridgeOptions;
+import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import io.vertx.ext.web.templ.PebbleTemplateEngine;
 
 public class Application extends BaseApplication {
@@ -43,6 +46,15 @@ public class Application extends BaseApplication {
 
     final Router router = Router.router(vertx);
     router.route().handler(BodyHandler.create());
+
+    // SOCKJS
+    SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
+    BridgeOptions options = new BridgeOptions();
+    options.addOutboundPermitted(new PermittedOptions().setAddress("new.comment"));
+    options.addOutboundPermitted(new PermittedOptions().setAddress("remove.comment"));
+    options.addOutboundPermitted(new PermittedOptions().setAddress("new.rating"));
+    sockJSHandler.bridge(options);
+    router.route("/eventbus/*").handler(sockJSHandler);
 
     // SERIES DATA
     addRoute(router, SERIES_SERVICE, HttpMethod.GET, SERIES_PATH + PATH_ID_SUFFIX);
