@@ -90,6 +90,9 @@
           	  <minimumTokens>20</minimumTokens>
           	  <targetJdk>1.8</targetJdk>
           	  <ruleSetFile>../pmd.xml</ruleSetFile>
+          	  <excludes>
+			    <exclude>src/main/resources/*.*</exclude>
+			  </excludes>
           	</configuration>	
           </execution>
         </executions>

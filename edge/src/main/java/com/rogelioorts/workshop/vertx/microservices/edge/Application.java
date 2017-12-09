@@ -48,8 +48,8 @@ public class Application extends BaseApplication {
     router.route().handler(BodyHandler.create());
 
     // SOCKJS
-    SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
-    BridgeOptions options = new BridgeOptions();
+    final SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
+    final BridgeOptions options = new BridgeOptions();
     options.addOutboundPermitted(new PermittedOptions().setAddress("new.comment"));
     options.addOutboundPermitted(new PermittedOptions().setAddress("remove.comment"));
     options.addOutboundPermitted(new PermittedOptions().setAddress("new.rating"));
@@ -83,7 +83,7 @@ public class Application extends BaseApplication {
     router.route("/api/*").handler(new ResourceNotFoundHandler()).failureHandler(new JsonExceptionHandler());
 
     // FRONTEND
-    StaticHandler staticHandler = StaticHandler.create("app/dist/");
+    final StaticHandler staticHandler = StaticHandler.create("app/dist/");
     router.route("/assets/*").handler(staticHandler);
     router.route(HttpMethod.GET, "/*").handler(new MainHandler(templateEngine));
 
