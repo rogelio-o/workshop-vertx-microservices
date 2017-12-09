@@ -54,50 +54,6 @@
         </configuration>
       </plugin>
       <plugin>
-	    <groupId>org.apache.maven.plugins</groupId>
-	    <artifactId>maven-checkstyle-plugin</artifactId>
-	    <version>2.17</version>
-	    <executions>
-	      <execution>
-	        <id>checkstyle</id>
-	        <phase>validate</phase>
-	        <configuration>
-	          <configLocation>../checkstyle.xml</configLocation>
-	          <encoding>UTF-8</encoding>
-	          <consoleOutput>true</consoleOutput>
-	          <failsOnError>true</failsOnError>
-	          <linkXRef>false</linkXRef>
-	        </configuration>
-	        <goals>
-	          <goal>check</goal>
-	       </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.8</version>
-        <executions>
-          <execution>
-	        <id>pmd</id>
-	        <phase>validate</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <configuration>
-          	  <sourceEncoding>utf-8</sourceEncoding>
-          	  <minimumTokens>20</minimumTokens>
-          	  <targetJdk>1.8</targetJdk>
-          	  <ruleSetFile>../pmd.xml</ruleSetFile>
-          	  <excludes>
-			    <exclude>src/main/resources/*.*</exclude>
-			  </excludes>
-          	</configuration>	
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
         <version>${frontend-maven-plugin.version}</version>
