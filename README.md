@@ -2,7 +2,7 @@
 
 Code of the workshop "Vert.x and Microservices" imparted in Sopra Open Learning sessions.
 
-## How to use it
+## How to use it
 
 This repo is for a Sopra Steria Open Learning session. Attendees will need it
 in order to follow the lecture.
