@@ -70,18 +70,11 @@ public final class DiscoveryService {
 
   public static void registerService(final Vertx vertx, final Record record, final Handler<AsyncResult<Record>> handler) {
     start(vertx);
-    discovery.publish(record, handler);
+    // #PLACEHOLDER-20a
   }
 
   public static void unregisterService(final Record record, final Handler<AsyncResult<Void>> handler) {
-    discovery.unpublish(record.getRegistration(), res -> {
-      if (res.failed()) {
-        handler.handle(Future.failedFuture(res.cause()));
-      } else {
-        discovery.close();
-        handler.handle(Future.succeededFuture());
-      }
-    });
+    // #PLACEHOLDER-20b
   }
 
   public static void getService(final String service, final Handler<AsyncResult<ServiceReference>> handler) {
@@ -107,38 +100,35 @@ public final class DiscoveryService {
 
   public static void callService(final String service, final HttpMethod method, final String path, final Buffer body,
       final Handler<AsyncResult<BufferClientResponse>> handler) {
-    final JsonObject recordQuery = new JsonObject().put("name", service);
-    discovery.getRecords(recordQuery, recordResult -> {
-      if (recordResult.failed()) {
-        handler.handle(Future.failedFuture(recordResult.cause()));
+    getHttpClient(service, clientRes -> {
+      if (clientRes.failed()) {
+        handler.handle(Future.failedFuture(clientRes.cause()));
       } else {
-        try {
-          final ServiceReference reference = getBalancedReference(service, recordResult.result());
+        final HttpClient client = clientRes.result();
 
-          final HttpClient client = reference.getAs(HttpClient.class);
+        breaker.<BufferClientResponse>execute(future -> {
+          final HttpClientRequest request = client.request(method, path, httpClientResponse -> {
+            httpClientResponse.exceptionHandler(error -> future.fail(error));
+            httpClientResponse.endHandler(v -> client.close());
+            httpClientResponse.bodyHandler(buffer -> future.complete(new BufferClientResponse(httpClientResponse, buffer)));
+          });
 
-          breaker.<BufferClientResponse>execute(future -> {
-            final HttpClientRequest request = client.request(method, path, httpClientResponse -> {
-              httpClientResponse.exceptionHandler(error -> future.fail(error));
-              httpClientResponse.endHandler(v -> client.close());
-              httpClientResponse.bodyHandler(buffer -> future.complete(new BufferClientResponse(httpClientResponse, buffer)));
-            });
+          LOG.debug("Calling to service {0}: {1} {2}", service, method, request.absoluteURI());
 
-            LOG.debug("Calling to service {0}: {1} {2}", service, method, request.absoluteURI());
+          request.exceptionHandler(error -> future.fail(error));
 
-            request.exceptionHandler(error -> future.fail(error));
-
-            if (body == null) {
-              request.end();
-            } else {
-              request.end(body);
-            }
-          }).setHandler(handler);
-        } catch (NoSuchElementException e) {
-          handler.handle(Future.failedFuture(e));
-        }
+          if (body == null) {
+            request.end();
+          } else {
+            request.end(body);
+          }
+        }).setHandler(handler);
       }
     });
+  }
+
+  private static void getHttpClient(final String service, final Handler<AsyncResult<HttpClient>> handler) {
+    // #PLACEHOLDER-20c
   }
 
   private static ServiceReference getBalancedReference(final String service, final List<Record> records) throws NoSuchElementException {

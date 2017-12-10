@@ -1,6 +1,5 @@
 package com.rogelioorts.workshop.vertx.microservices.edge;
 
-import com.rogelioorts.workshop.vertx.microservices.edge.routing.MainHandler;
 import com.rogelioorts.workshop.vertx.microservices.edge.routing.ProxyHandler;
 import com.rogelioorts.workshop.vertx.microservices.shared.BaseApplication;
 import com.rogelioorts.workshop.vertx.microservices.shared.exceptions.JsonExceptionHandler;
@@ -9,13 +8,8 @@ import com.rogelioorts.workshop.vertx.microservices.shared.exceptions.ResourceNo
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerResponse;
-import io.vertx.ext.bridge.PermittedOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.handler.StaticHandler;
-import io.vertx.ext.web.handler.sockjs.BridgeOptions;
-import io.vertx.ext.web.handler.sockjs.SockJSHandler;
-import io.vertx.ext.web.templ.PebbleTemplateEngine;
 
 public class Application extends BaseApplication {
 
@@ -42,19 +36,12 @@ public class Application extends BaseApplication {
 
   @Override
   protected Router getRouter() {
-    final PebbleTemplateEngine templateEngine = PebbleTemplateEngine.create(vertx);
 
     final Router router = Router.router(vertx);
     router.route().handler(BodyHandler.create());
 
     // SOCKJS
-    final SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
-    final BridgeOptions options = new BridgeOptions();
-    options.addOutboundPermitted(new PermittedOptions().setAddress("new.comment"));
-    options.addOutboundPermitted(new PermittedOptions().setAddress("remove.comment"));
-    options.addOutboundPermitted(new PermittedOptions().setAddress("new.rating"));
-    sockJSHandler.bridge(options);
-    router.route("/eventbus/*").handler(sockJSHandler);
+    // #PLACEHOLDER-26
 
     // SERIES DATA
     addRoute(router, SERIES_SERVICE, HttpMethod.GET, SERIES_PATH + PATH_ID_SUFFIX);
@@ -83,9 +70,8 @@ public class Application extends BaseApplication {
     router.route("/api/*").handler(new ResourceNotFoundHandler()).failureHandler(new JsonExceptionHandler());
 
     // FRONTEND
-    final StaticHandler staticHandler = StaticHandler.create("app/dist/");
-    router.route("/assets/*").handler(staticHandler);
-    router.route(HttpMethod.GET, "/*").handler(new MainHandler(templateEngine));
+    // #PLACEHOLDER-25b
+    // #PLACEHOLDER-25a
 
     return router;
   }

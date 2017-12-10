@@ -36,7 +36,8 @@ public final class Requests {
     if (body == null) {
       context.fail(HttpResponseStatus.BAD_REQUEST.code());
     } else {
-      final T model = body.mapTo(bodyClass);
+      final T model = null; // REPLACE WITH #PLACEHOLDER-21a
+
       if (transformer != null) {
         transformer.accept(model);
       }

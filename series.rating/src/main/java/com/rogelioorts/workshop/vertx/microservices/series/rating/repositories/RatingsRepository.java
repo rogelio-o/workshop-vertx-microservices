@@ -11,7 +11,6 @@ import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
@@ -57,9 +56,8 @@ public class RatingsRepository extends BaseRepository<Rating> {
       if (res.failed()) {
         handler.handle(Future.failedFuture(res.cause()));
       } else {
-        final EventBus eventBus = vertx.eventBus();
         final RatingStatistics statistics = res.result();
-        eventBus.publish(NEW_RATING_BUS_MSG, JsonObject.mapFrom(statistics));
+        // #PLACEHOLDER-23a
 
         handler.handle(Future.succeededFuture());
       }

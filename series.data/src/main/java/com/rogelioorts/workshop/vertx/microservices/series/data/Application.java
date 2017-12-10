@@ -1,7 +1,6 @@
 package com.rogelioorts.workshop.vertx.microservices.series.data;
 
 import com.rogelioorts.workshop.vertx.microservices.series.data.events.comments.CommentsHandler;
-import com.rogelioorts.workshop.vertx.microservices.series.data.events.rating.NewRatingHandler;
 import com.rogelioorts.workshop.vertx.microservices.series.data.repositories.SeriesRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.data.routing.series.CreateSerieHandler;
 import com.rogelioorts.workshop.vertx.microservices.series.data.routing.series.DeleteSerieHandler;
@@ -63,7 +62,7 @@ public class Application extends BaseApplication {
     eventBus.consumer(CommentsHandler.NEW_ADDRESS, commentsHandler);
     eventBus.consumer(CommentsHandler.REMOVE_ADDRESS, commentsHandler);
 
-    eventBus.consumer(NewRatingHandler.ADDRESS, new NewRatingHandler(vertx, seriesRepository));
+    // #PLACEHOLDER-23b
   }
 
 }

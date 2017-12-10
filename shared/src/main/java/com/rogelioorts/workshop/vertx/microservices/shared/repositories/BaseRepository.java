@@ -1,8 +1,6 @@
 package com.rogelioorts.workshop.vertx.microservices.shared.repositories;
 
-import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 import com.rogelioorts.workshop.vertx.microservices.shared.services.ConfigurationService;
 
@@ -11,7 +9,6 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.mongo.FindOptions;
 import io.vertx.ext.mongo.MongoClient;
 
 public abstract class BaseRepository<T extends Model> {
@@ -36,27 +33,7 @@ public abstract class BaseRepository<T extends Model> {
   }
 
   public void insert(final T model, final Handler<AsyncResult<Void>> handler) {
-    beforeInsert(model, beforeRes -> {
-      if (beforeRes.failed()) {
-        handler.handle(Future.failedFuture(beforeRes.cause()));
-      } else {
-        client.insert(getCollectionName(), JsonObject.mapFrom(model), res -> {
-          if (res.failed()) {
-            handler.handle(Future.failedFuture(res.cause()));
-          } else {
-            model.setId(res.result());
-
-            afterInsert(model, afterRes -> {
-              if (afterRes.failed()) {
-                handler.handle(Future.failedFuture(afterRes.cause()));
-              } else {
-                handler.handle(Future.succeededFuture());
-              }
-            });
-          }
-        });
-      }
-    });
+    // #PLACEHOLDER-22a
   }
 
   protected void beforeUpdate(final T model, final Handler<AsyncResult<Void>> handler) {
@@ -145,32 +122,7 @@ public abstract class BaseRepository<T extends Model> {
   }
 
   public void findPaginated(final PaginatedOptions paginatedOptions, final Handler<AsyncResult<PaginatedResult<T>>> handler) {
-    final FindOptions options = new FindOptions().setSkip(paginatedOptions.getSkip()).setSort(paginatedOptions.getSort())
-        .setLimit(paginatedOptions.getPerPage());
-    final JsonObject query = paginatedOptions.getQuery();
-
-    client.findWithOptions(getCollectionName(), query, options, res -> {
-      if (res.failed()) {
-        handler.handle(Future.failedFuture(res.cause()));
-      } else {
-        client.count(getCollectionName(), query, countRes -> {
-          if (countRes.failed()) {
-            handler.handle(Future.failedFuture(countRes.cause()));
-          } else {
-            final long totalResults = countRes.result();
-            final List<T> results = res.result().stream().map(obj -> obj.mapTo(modelClass)).collect(Collectors.toList());
-
-            final PaginatedResult<T> paginatedResult = new PaginatedResult<>();
-            paginatedResult.setResults(results);
-            paginatedResult.setPage(paginatedOptions.getPage());
-            paginatedResult.setPerPage(paginatedOptions.getPerPage());
-            paginatedResult.setTotalResults(totalResults);
-
-            handler.handle(Future.succeededFuture(paginatedResult));
-          }
-        });
-      }
-    });
+    // #PLACEHOLDER-22b
   }
 
   public void find(final String id, final Handler<AsyncResult<T>> handler) {

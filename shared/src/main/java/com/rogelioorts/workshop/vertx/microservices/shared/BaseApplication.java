@@ -113,8 +113,8 @@ public abstract class BaseApplication extends AbstractVerticle {
   private void createHttpServer(final int port, final String host, final Handler<AsyncResult<HttpServer>> handler) {
     log.debug("Trying to start server in " + host + ":" + port);
 
-    final HttpServer server = vertx.createHttpServer();
-    server.requestHandler(getRouter()::accept).listen(port, handler);
+    // #PLACEHOLDER-19
+    // #PLACEHOLDER-24b
   }
 
   private String getDefaultHost() throws UnknownHostException {

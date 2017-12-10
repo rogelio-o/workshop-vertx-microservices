@@ -42,7 +42,8 @@ public final class Responses {
   }
 
   public static <T> void sendJson(final RoutingContext context, final T objResponse, final int statusCode) {
-    sendJson(context, JsonObject.mapFrom(objResponse), statusCode);
+    final JsonObject jsonResponse = null; // REPLACE WITH #PLACEHOLDER-21b
+    sendJson(context, jsonResponse, statusCode);
   }
 
   public static <T> void sendJson(final RoutingContext context, final JsonObject jsonResponse, final int statusCode) {
