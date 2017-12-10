@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
-import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.BaseRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.data.models.Serie;
+import com.rogelioorts.workshop.vertx.microservices.shared.repositories.BaseRepository;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;

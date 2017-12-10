@@ -1,8 +1,8 @@
 package com.rogelioorts.workshop.vertx.microservices.series.data.routing.series;
 
-import com.rogelioorts.workshop.vertx.microservices.scafolder.utils.Responses;
 import com.rogelioorts.workshop.vertx.microservices.series.data.models.Serie;
 import com.rogelioorts.workshop.vertx.microservices.series.data.repositories.SeriesRepository;
+import com.rogelioorts.workshop.vertx.microservices.shared.utils.Responses;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.Handler;

@@ -1,8 +1,8 @@
 package com.rogelioorts.workshop.vertx.microservices.series.episodes.routing.episodes;
 
-import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.PaginatedOptions;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.utils.Responses;
 import com.rogelioorts.workshop.vertx.microservices.series.episodes.repositories.EpisodesRepository;
+import com.rogelioorts.workshop.vertx.microservices.shared.repositories.PaginatedOptions;
+import com.rogelioorts.workshop.vertx.microservices.shared.utils.Responses;
 
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;

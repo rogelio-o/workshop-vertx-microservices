@@ -7,7 +7,7 @@
   <description>This microservice manages the series data and show it.</description>
   
   <properties>
-  	<scafolder-version>0.0.1-SNAPSHOT</scafolder-version>
+  	<shared-version>0.0.1-SNAPSHOT</shared-version>
   	<lombok-version>1.16.16</lombok-version>
   </properties>
   
@@ -23,8 +23,8 @@
   <dependencies>
   	<dependency>
 	  <groupId>com.rogelioorts.workshop.vertx.microservices</groupId>
-	  <artifactId>scafolder</artifactId>
-	  <version>${scafolder-version}</version>
+	  <artifactId>shared</artifactId>
+	  <version>${shared-version}</version>
 	</dependency>
 	<dependency>
       <groupId>org.projectlombok</groupId>

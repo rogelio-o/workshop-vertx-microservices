@@ -1,14 +1,14 @@
 package com.rogelioorts.workshop.vertx.microservices.series.comments;
 
-import com.rogelioorts.workshop.vertx.microservices.scafolder.BaseApplication;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.JsonExceptionHandler;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.ResourceNotFoundHandler;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.BaseRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.comments.repositories.CommentsRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.comments.routing.comments.CreateCommentHandler;
 import com.rogelioorts.workshop.vertx.microservices.series.comments.routing.comments.DeleteCommentHandler;
 import com.rogelioorts.workshop.vertx.microservices.series.comments.routing.comments.ListCommentsHandler;
 import com.rogelioorts.workshop.vertx.microservices.series.comments.routing.comments.UpdateCommentHandler;
+import com.rogelioorts.workshop.vertx.microservices.shared.BaseApplication;
+import com.rogelioorts.workshop.vertx.microservices.shared.exceptions.JsonExceptionHandler;
+import com.rogelioorts.workshop.vertx.microservices.shared.exceptions.ResourceNotFoundHandler;
+import com.rogelioorts.workshop.vertx.microservices.shared.repositories.BaseRepository;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.mongo.MongoClient;

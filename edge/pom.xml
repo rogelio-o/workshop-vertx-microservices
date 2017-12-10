@@ -9,7 +9,7 @@
   <properties>
   	<vertx-version>3.5.0</vertx-version>
   	<lombok-version>1.16.16</lombok-version>
-  	<scafolder-version>0.0.1-SNAPSHOT</scafolder-version>
+  	<shared-version>0.0.1-SNAPSHOT</shared-version>
   	<frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
   	<node.version>v8.4.0</node.version>
   </properties>
@@ -26,8 +26,8 @@
   <dependencies>
   	<dependency>
 	  <groupId>com.rogelioorts.workshop.vertx.microservices</groupId>
-	  <artifactId>scafolder</artifactId>
-	  <version>${scafolder-version}</version>
+	  <artifactId>shared</artifactId>
+	  <version>${shared-version}</version>
 	</dependency>
 	<dependency>
 		<groupId>io.vertx</groupId>

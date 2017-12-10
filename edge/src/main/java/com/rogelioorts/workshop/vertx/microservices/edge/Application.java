@@ -2,9 +2,9 @@ package com.rogelioorts.workshop.vertx.microservices.edge;
 
 import com.rogelioorts.workshop.vertx.microservices.edge.routing.MainHandler;
 import com.rogelioorts.workshop.vertx.microservices.edge.routing.ProxyHandler;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.BaseApplication;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.JsonExceptionHandler;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.ResourceNotFoundHandler;
+import com.rogelioorts.workshop.vertx.microservices.shared.BaseApplication;
+import com.rogelioorts.workshop.vertx.microservices.shared.exceptions.JsonExceptionHandler;
+import com.rogelioorts.workshop.vertx.microservices.shared.exceptions.ResourceNotFoundHandler;
 
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpMethod;

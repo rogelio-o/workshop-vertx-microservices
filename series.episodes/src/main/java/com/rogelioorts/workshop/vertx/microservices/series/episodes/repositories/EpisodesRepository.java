@@ -2,8 +2,8 @@ package com.rogelioorts.workshop.vertx.microservices.series.episodes.repositorie
 
 import java.time.LocalDateTime;
 
-import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.BaseRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.episodes.models.Episode;
+import com.rogelioorts.workshop.vertx.microservices.shared.repositories.BaseRepository;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;

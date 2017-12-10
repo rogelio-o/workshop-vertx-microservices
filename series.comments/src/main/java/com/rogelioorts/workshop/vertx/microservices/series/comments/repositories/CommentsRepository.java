@@ -2,10 +2,10 @@ package com.rogelioorts.workshop.vertx.microservices.series.comments.repositorie
 
 import java.time.LocalDateTime;
 
-import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.BaseRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.comments.models.Comment;
 import com.rogelioorts.workshop.vertx.microservices.series.comments.models.NewCommentMessage;
 import com.rogelioorts.workshop.vertx.microservices.series.comments.models.RemoveCommentMessage;
+import com.rogelioorts.workshop.vertx.microservices.shared.repositories.BaseRepository;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;

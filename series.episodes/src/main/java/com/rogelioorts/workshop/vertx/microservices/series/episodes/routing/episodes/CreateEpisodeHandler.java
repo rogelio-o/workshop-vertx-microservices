@@ -1,9 +1,9 @@
 package com.rogelioorts.workshop.vertx.microservices.series.episodes.routing.episodes;
 
-import com.rogelioorts.workshop.vertx.microservices.scafolder.utils.Requests;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.utils.Responses;
 import com.rogelioorts.workshop.vertx.microservices.series.episodes.models.Episode;
 import com.rogelioorts.workshop.vertx.microservices.series.episodes.repositories.EpisodesRepository;
+import com.rogelioorts.workshop.vertx.microservices.shared.utils.Requests;
+import com.rogelioorts.workshop.vertx.microservices.shared.utils.Responses;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.Handler;

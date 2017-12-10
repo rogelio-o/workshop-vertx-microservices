@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.Model;
+import com.rogelioorts.workshop.vertx.microservices.shared.repositories.Model;
 
 import lombok.Getter;
 import lombok.Setter;

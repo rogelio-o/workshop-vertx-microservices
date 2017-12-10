@@ -1,9 +1,9 @@
 package com.rogelioorts.workshop.vertx.microservices.series.rating.routing.rating;
 
-import com.rogelioorts.workshop.vertx.microservices.scafolder.utils.Requests;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.utils.Responses;
 import com.rogelioorts.workshop.vertx.microservices.series.rating.models.Rating;
 import com.rogelioorts.workshop.vertx.microservices.series.rating.repositories.RatingsRepository;
+import com.rogelioorts.workshop.vertx.microservices.shared.utils.Requests;
+import com.rogelioorts.workshop.vertx.microservices.shared.utils.Responses;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.Handler;

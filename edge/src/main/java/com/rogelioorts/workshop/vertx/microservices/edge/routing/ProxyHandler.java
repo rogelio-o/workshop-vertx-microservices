@@ -4,8 +4,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import com.rogelioorts.workshop.vertx.microservices.scafolder.services.DiscoveryService;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.services.JsonClientResponse;
+import com.rogelioorts.workshop.vertx.microservices.shared.services.DiscoveryService;
+import com.rogelioorts.workshop.vertx.microservices.shared.services.JsonClientResponse;
 
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpHeaders;

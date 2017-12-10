@@ -1,9 +1,9 @@
 package com.rogelioorts.workshop.vertx.microservices.series.comments.routing.comments;
 
-import com.rogelioorts.workshop.vertx.microservices.scafolder.utils.Requests;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.utils.Responses;
 import com.rogelioorts.workshop.vertx.microservices.series.comments.models.Comment;
 import com.rogelioorts.workshop.vertx.microservices.series.comments.repositories.CommentsRepository;
+import com.rogelioorts.workshop.vertx.microservices.shared.utils.Requests;
+import com.rogelioorts.workshop.vertx.microservices.shared.utils.Responses;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.Handler;

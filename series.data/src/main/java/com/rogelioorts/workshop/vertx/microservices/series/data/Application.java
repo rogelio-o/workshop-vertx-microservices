@@ -1,9 +1,5 @@
 package com.rogelioorts.workshop.vertx.microservices.series.data;
 
-import com.rogelioorts.workshop.vertx.microservices.scafolder.BaseApplication;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.JsonExceptionHandler;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.ResourceNotFoundHandler;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.BaseRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.data.events.comments.CommentsHandler;
 import com.rogelioorts.workshop.vertx.microservices.series.data.events.rating.NewRatingHandler;
 import com.rogelioorts.workshop.vertx.microservices.series.data.repositories.SeriesRepository;
@@ -12,6 +8,10 @@ import com.rogelioorts.workshop.vertx.microservices.series.data.routing.series.D
 import com.rogelioorts.workshop.vertx.microservices.series.data.routing.series.ListSeriesHandler;
 import com.rogelioorts.workshop.vertx.microservices.series.data.routing.series.UpdateSerieHandler;
 import com.rogelioorts.workshop.vertx.microservices.series.data.routing.series.ViewSerieHandler;
+import com.rogelioorts.workshop.vertx.microservices.shared.BaseApplication;
+import com.rogelioorts.workshop.vertx.microservices.shared.exceptions.JsonExceptionHandler;
+import com.rogelioorts.workshop.vertx.microservices.shared.exceptions.ResourceNotFoundHandler;
+import com.rogelioorts.workshop.vertx.microservices.shared.repositories.BaseRepository;
 
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.http.HttpMethod;

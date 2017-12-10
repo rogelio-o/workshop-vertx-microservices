@@ -1,15 +1,15 @@
 package com.rogelioorts.workshop.vertx.microservices.series.episodes;
 
-import com.rogelioorts.workshop.vertx.microservices.scafolder.BaseApplication;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.JsonExceptionHandler;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.exceptions.ResourceNotFoundHandler;
-import com.rogelioorts.workshop.vertx.microservices.scafolder.repositories.BaseRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.episodes.repositories.EpisodesRepository;
 import com.rogelioorts.workshop.vertx.microservices.series.episodes.routing.episodes.CreateEpisodeHandler;
 import com.rogelioorts.workshop.vertx.microservices.series.episodes.routing.episodes.DeleteEpisodeHandler;
 import com.rogelioorts.workshop.vertx.microservices.series.episodes.routing.episodes.ListEpisodesHandler;
 import com.rogelioorts.workshop.vertx.microservices.series.episodes.routing.episodes.UpdateEpisodeHandler;
 import com.rogelioorts.workshop.vertx.microservices.series.episodes.routing.episodes.ViewEpisodeHandler;
+import com.rogelioorts.workshop.vertx.microservices.shared.BaseApplication;
+import com.rogelioorts.workshop.vertx.microservices.shared.exceptions.JsonExceptionHandler;
+import com.rogelioorts.workshop.vertx.microservices.shared.exceptions.ResourceNotFoundHandler;
+import com.rogelioorts.workshop.vertx.microservices.shared.repositories.BaseRepository;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.mongo.MongoClient;
